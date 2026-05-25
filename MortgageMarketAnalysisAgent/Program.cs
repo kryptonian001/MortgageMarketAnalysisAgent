@@ -1,0 +1,26 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using MortgageMarketAnalysisAgent.Helpers;
+using MortgageMarketAnalysisAgent.Services.Concretes;
+using MortgageMarketAnalysisAgent.Services.Interfaces;
+
+
+namespace MortgageMarketAnalysisAgent
+{
+    public class Program
+    {
+        static async Task Main(string[] args)
+        {
+            var builder = Host.CreateApplicationBuilder(args);
+
+            await builder.Services.AddAgentConfigurationAsync();
+
+            using var host = builder.Build();
+
+            var scRunner = host.Services.GetRequiredService<IMarketAnalysisrService>();
+
+            await scRunner.RunAnalysis();
+        }
+    }
+}

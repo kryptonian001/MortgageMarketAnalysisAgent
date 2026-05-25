@@ -1,0 +1,53 @@
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Apis.Docs.v1;
+using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using MortgageMarketAnalysisAgent.Models.Tasks;
+using MortgageMarketAnalysisAgent.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MortgageMarketAnalysisAgent.Services.Concretes
+{
+    public class GoogleDocumentService : IExternalDocumentService
+    {
+        private readonly DocsService docsService;
+        private readonly SheetsService sheetsService;
+
+        public GoogleDocumentService(UserCredential credential)
+        {
+            var init = new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "MortgageMarketAnalysisAgent"
+            };
+
+            docsService = new DocsService(init);
+
+            sheetsService = new SheetsService(init);
+        }
+
+        public async Task<string> ReadDocument(string docId)
+        {
+            return "";
+        }
+
+        public async Task<IList<IList<object>>> ReadRangeAsync(string sheetId, string range)
+        {
+            SpreadsheetsResource.ValuesResource.GetRequest request =
+                 sheetsService.Spreadsheets.Values.Get(sheetId, range);
+
+            ValueRange reposne = await request.ExecuteAsync();
+
+            return reposne.Values ?? default(IList<IList<object>>);
+        }
+
+        public async Task WriteDocument(string docName, string content)
+        {
+
+        }
+
+    }
+}

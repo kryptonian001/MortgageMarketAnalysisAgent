@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MortgageMarketAnalysisAgent": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

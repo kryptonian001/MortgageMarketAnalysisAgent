@@ -32,8 +32,4 @@
 	  <PackageReference Include="System.CommandLine" Version="3.0.0-preview.3.26207.106" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Agents\" />
-  </ItemGroup>
-
 </Project>

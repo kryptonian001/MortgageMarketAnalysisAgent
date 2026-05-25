@@ -8,7 +8,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
     /// <summary>
     /// Household Financial Intelligence Agent report
     /// </summary>
-    public class HFIAgentReport
+    public class HouseholdFinancialIntelligenceModel
     {
         public static class ReportCells
         {

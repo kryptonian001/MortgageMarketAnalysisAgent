@@ -8,19 +8,23 @@ using System.Text;
 
 namespace MortgageMarketAnalysisAgent.Services.Concretes
 {
-    public class MarketAnalysisService: IMarketAnalysisrService
+    public class MarketAnalysisService: IMarketAnalysisService
     {
-        private readonly ReportBuildingService _reportBuidService;
+        private readonly HouseholdFinancialIntelligenceReportBuildingService _reportBuidService;
+        private readonly IPromptBuilder _promptBuilder;
 
 
-        public MarketAnalysisService(ReportBuildingService reportBuilding) 
+        public MarketAnalysisService(HouseholdFinancialIntelligenceReportBuildingService reportBuilding, IPromptBuilder promptBuilder) 
         {
             _reportBuidService = reportBuilding;
+            _promptBuilder = promptBuilder;
         }
 
         public async Task RunAnalysis()
         {
-            var reoprt = await _reportBuidService.BuildHouseholdFinancialIntelligenceReport();
+            var model = await _reportBuidService.BuildHouseholdFinancialIntelligenceReport();
+
+            var prompt = _promptBuilder.BuilPrompt(model);
         }
 
 

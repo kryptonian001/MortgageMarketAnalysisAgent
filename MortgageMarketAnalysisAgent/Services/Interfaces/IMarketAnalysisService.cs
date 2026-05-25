@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MortgageMarketAnalysisAgent.Services.Interfaces
 {
-    public interface IMarketAnalysisrService
+    public interface IMarketAnalysisService
     {
         Task RunAnalysis();
     }

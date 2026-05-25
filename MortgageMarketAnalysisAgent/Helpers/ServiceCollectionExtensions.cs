@@ -36,13 +36,15 @@ namespace MortgageMarketAnalysisAgent.Helpers
             config.Bind(agentCfg);
             services.AddOptions<AgentConfig>();
 
-            services.AddTransient<IMarketAnalysisrService, MarketAnalysisService>();
+            services.AddTransient<IMarketAnalysisService, MarketAnalysisService>();
 
             var creds = await GetGoogleCredentials();
 
             services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds));
 
-            services.AddTransient<ReportBuildingService>();
+            services.AddTransient<HouseholdFinancialIntelligenceReportBuildingService>();
+
+            services.AddTransient<IPromptBuilder, HouseholdFinancialPromptBuilder>();
         }
 
         private static async Task<UserCredential> GetGoogleCredentials()

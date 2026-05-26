@@ -21,6 +21,12 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             prompt.AppendLine(BuildModelSummary(model));
 
             prompt.AppendLine();
+            prompt.AppendLine(BuildCreditProfileSummary(model));
+
+            prompt.AppendLine();
+            prompt.AppendLine(GetReportTemplate());
+
+            prompt.AppendLine();
             prompt.AppendLine("Here is the full household financial model as JSON:");
             prompt.AppendLine();
             prompt.AppendLine("```json");
@@ -79,16 +85,44 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 - If a row has ambiguous or mixed-purpose values, call that out in the data quality section instead of forcing an analysis.
                 - Do not make payment recommendations from fields whose meaning is unclear.
 
-                Report format:
-                1. Executive summary
-                2. Current financial position
-                3. Cash-flow safety assessment
-                4. Credit utilization risks
-                5. Mortgage refinance readiness
-                6. Recommended payment allocation
-                7. What not to do
-                8. Questions or missing data
-                9. Next update checklist
+                Credit profile interpretation rules:
+                - Use the CreditProfiles section for refinance credit readiness.
+                - For mortgage readiness, focus on FICO 5, FICO 4, and FICO 2.
+                - Calculate each person's mortgage middle score as the middle value of FICO 5, FICO 4, and FICO 2.
+                - If both borrowers are included, use the lower mortgage middle score as the conservative household planning score.
+                - Do not use Vantage 3.0 as the mortgage readiness score.
+                - Consider score date and data confidence when assessing reliability.
+                - If scores are older than 30 days, mark the score data as stale or needing refresh.
+
+                Mortgage refinance readiness interpretation:
+                - In mortgageRefiReadinesses, a field is NOT missing if the "value" field contains a non-empty, non-placeholder value.
+                - Do not treat status = "Needed" as meaning the value is missing when a value is present.
+                - If "value" is present but "status" says "Needed", classify it as "provided but status may be stale or contradictory."
+                - Only call a refinance input missing when value is empty, "-", "#REF!", "N/A", null, or clearly not usable.
+                - In the executive summary, do not say mortgage balances, rates, escrow, or term are missing if those values are present in mortgageRefiReadinesses.
+
+                Consistency rules:
+                - Always use the provided report template exactly.
+                - Do not rename sections.
+                - Do not reorder sections.
+                - Do not omit sections.
+                - Do not create new top-level sections.
+                - Keep table columns exactly as provided.
+                - If a value is unavailable, use "Not provided".
+                - If a value exists but conflicts with status/source metadata, use "Provided but metadata conflicts".
+                - Do not summarize away required tables.
+                - Return markdown only.
+                - Do not wrap the report in a code block.
+
+                Report structure:
+                - Use the provided markdown report template exactly.
+                - Do not add, remove, rename, or reorder sections.
+                - Do not change table column names.
+                - Fill every section.
+                - If a value is unavailable, use "Not provided".
+                - If a value exists but conflicts with status/source metadata, write "Provided but metadata conflicts".
+                - Return markdown only.
+                - Do not wrap the report in a code block.
 
                 Output style:
                 - Use clear headings.
@@ -98,7 +132,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 - Be direct and practical.
                 """);
 
-            return prompt;
+            return prompt.ToString();
         }
 
         private static string BuildModelSummary(HouseholdFinancialIntelligenceModel model)
@@ -118,6 +152,166 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             sb.AppendLine($"- Open data quality issues: {model.AgentDashboard?.OpenDataQualityIssues?.Value}");
 
             return sb.ToString();
+        }
+
+        private static string BuildCreditProfileSummary(HouseholdFinancialIntelligenceModel model)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("Clean credit profile summary:");
+
+            foreach (var profile in model.CreditProfiles)
+            {
+                sb.AppendLine(
+                    $"- {profile.Person}: FICO 8={profile.Fico8}, " +
+                    $"FICO 5={profile.Fico5}, FICO 4={profile.Fico4}, FICO 2={profile.Fico2}, " +
+                    $"Mortgage middle score={profile.MortgageMiddleScore}, " +
+                    $"Vantage 3.0={profile.Vantage3_0}, " +
+                    $"Score date={profile.ScoreDate}, " +
+                    $"Data confidence={profile.DataConfidence}, " +
+                    $"Notes={profile.Notes}");
+            }
+
+            int? planningScore = model.CreditProfiles
+                .Select(x => x.MortgageMiddleScore)
+                .Where(x => x.HasValue)
+                .Select(x => x!.Value)
+                .DefaultIfEmpty()
+                .Min();
+
+            if (planningScore > 0)
+            {
+                sb.AppendLine($"- Conservative household planning score: {planningScore}");
+            }
+
+            return sb.ToString();
+        }
+
+        private static string GetReportTemplate()
+        {
+            return """
+                Report template:
+                Use the following exact markdown structure.
+                Do not add, remove, rename, or reorder sections.
+                Fill every section.
+                If a section has no usable data, write "Not provided" or "Uncertain" and explain why.
+
+                # Household Financial Intelligence Report
+
+                ## 1. Executive Summary
+
+                | Area | Status | Key Takeaway |
+                |---|---|---|
+                | Cash Flow |  |  |
+                | Credit Utilization |  |  |
+                | Mortgage Refinance Readiness |  |  |
+                | Data Quality |  |  |
+                | Recommended Next Action |  |  |
+
+                Summary:
+                - 
+                - 
+                - 
+
+                ## 2. Current Financial Position
+
+                | Metric | Value | Notes |
+                |---|---:|---|
+                | Total Monthly Bills |  |  |
+                | Total Credit Card Balance |  |  |
+                | Total Credit Card Limit |  |  |
+                | Overall Credit Utilization |  |  |
+                | Total Regular Loan Balance |  |  |
+                | Total Short-Term Balance |  |  |
+
+                ## 3. Cash-Flow Safety Assessment
+
+                | Pay Date / Period | Income | Required Expenses | After Expenses | 25% Buffer | Max Usable Extra |
+                |---|---:|---:|---:|---:|---:|
+                |  |  |  |  |  |  |
+
+                Cash-flow assessment:
+                - 
+                - 
+
+                ## 4. Credit Utilization Risks
+
+                | Card | Balance | Limit | Utilization | Risk Level | Recommended Action |
+                |---|---:|---:|---:|---|---|
+                |  |  |  |  |  |  |
+
+                Utilization priority:
+                1. 
+                2. 
+                3. 
+
+                ## 5. Credit Profile and Mortgage Score Readiness
+
+                | Person | FICO 5 | FICO 4 | FICO 2 | Mortgage Middle Score | Score Date | Confidence | Notes |
+                |---|---:|---:|---:|---:|---|---|---|
+                |  |  |  |  |  |  |  |  |
+
+                Mortgage score readiness:
+                - Conservative household planning score: 
+                - Target mortgage score: 
+                - Readiness status: 
+
+                ## 6. Mortgage Refinance Readiness
+
+                | Input | Value | Status Interpretation | Notes |
+                |---|---:|---|---|
+                | First Mortgage Balance |  |  |  |
+                | First Mortgage Rate |  |  |  |
+                | Term Remaining |  |  |  |
+                | P&I Payment |  |  |  |
+                | Escrow |  |  |  |
+                | Second Mortgage Balance |  |  |  |
+                | Second Mortgage Payment |  |  |  |
+                | Second Mortgage Rate |  |  |  |
+                | Target Refinance Month |  |  |  |
+                | Target Minimum Mortgage FICO |  |  |  |
+
+                Refinance readiness assessment:
+                - 
+                - 
+
+                ## 7. Recommended Payment Allocation
+
+                | Priority | Target | Recommended Amount | Reason |
+                |---:|---|---:|---|
+                | 1 |  |  |  |
+                | 2 |  |  |  |
+                | 3 |  |  |  |
+
+                Allocation rules applied:
+                - Minimum payments first.
+                - No more than 75% of positive after-expense cash.
+                - Preserve 25% buffer.
+
+                ## 8. What Not To Do
+
+                - 
+                - 
+                - 
+
+                ## 9. Questions or Missing Data
+
+                | Item | Why It Matters | Impact |
+                |---|---|---|
+                |  |  |  |
+
+                ## 10. Next Update Checklist
+
+                - [ ] 
+                - [ ] 
+                - [ ] 
+
+                ## 11. Data Quality Notes
+
+                | Issue | Location / Field | Recommended Fix |
+                |---|---|---|
+                |  |  |  |
+                """;
         }
     }
     

@@ -19,6 +19,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
             public static readonly string INCOMES = "Income!A2:I10";
             public static readonly string MONTHLY_BILLS = "Monthly Bills!A2:J50";
             public static readonly string CREDIT_CARDS  = "Credit Cards!A2:O20";
+            public static readonly string CREDIT_PROFILES = "Credit Profiles!A2:I3";
             public static readonly string LOANS = "Loans!A2:O10";
             public static readonly string SHORT_TERM_FINANCING = "Short-Term Financing!A2:K20";
             public static readonly string PAYCHECK_CASH_FLOW = "Paycheck Cash Flow!A2:S52";
@@ -29,6 +30,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
         public List<Income> Incomes { get; set; } = new();
         public List<MonthlyBills> MonthlyBills { get; set; } = new();
         public List<CreditCard> CreditCards { get; set; } = new();
+        public List<CreditProfile> CreditProfiles { get; set; } = new();
         public List<Loan> Loans { get; set; } = new();
         public List<ShortTermFinance> ShortTermFinancing { get; set; } = new();
         public List<CashFlow> PaychecCashFlow { get; set; } = new();

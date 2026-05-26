@@ -7,9 +7,8 @@ namespace MortgageMarketAnalysisAgent.Models.Config
 {
     public class AgentConfig
     {
-        public string GithubToken { get; set; }
+        public string GoogleConfigPath { get; set; }
         public string OpenAiKey { get; set; }
-
-        public UserCredential GoogleCredential  { get; set; }
+        public string NotificationEmail { get; set; }
     }
 }

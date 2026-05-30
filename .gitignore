@@ -429,3 +429,5 @@ FodyWeavers.xsd
 *.msp
 /MortgageMarketAnalysisAgent/client_secret_115500072584-jhdh6gus5nta4nodioc8lbg1vsms9jh9.apps.googleusercontent.com.json
 /MortgageMarketAnalysisAgent/client_secret.json
+/MortgageMarketAnalysisAgent/appsettings.json
+/MortgageMarketAnalysisAgent/appsettings.json

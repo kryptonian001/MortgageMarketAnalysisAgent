@@ -4,8 +4,8 @@ using System.Text;
 
 namespace MortgageMarketAnalysisAgent.Services.Interfaces
 {
-    public interface IMarketAnalysisService
+    public interface INotify
     {
-        Task RunAnalysis();
+        Task SendEmailNotificationAsync(string emailAddress, string subject, string message);
     }
 }

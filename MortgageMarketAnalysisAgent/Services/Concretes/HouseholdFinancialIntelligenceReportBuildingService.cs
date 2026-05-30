@@ -1,26 +1,27 @@
 ﻿using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Documents;
 using MortgageMarketAnalysisAgent.Models.Documents.Components;
+using MortgageMarketAnalysisAgent.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace MortgageMarketAnalysisAgent.Services.Concretes
 {
-    public class ReportBuildingService
+    public class HouseholdFinancialIntelligenceReportBuildingService : IReportBuildingService
     {
         private readonly GoogleDocumentService _documentService;
 
-        public ReportBuildingService(GoogleDocumentService documentService)
+        public HouseholdFinancialIntelligenceReportBuildingService(GoogleDocumentService documentService)
         {
             _documentService = documentService;
         }
 
-        public async Task<HFIAgentReport> BuildHouseholdFinancialIntelligenceReport()
+        public async Task<HouseholdFinancialIntelligenceModel> BuildHouseholdFinancialIntelligenceReport()
         {
-            HFIAgentReport report = new HFIAgentReport { AgentDashboard = new AgentDashboard() };
+            HouseholdFinancialIntelligenceModel report = new HouseholdFinancialIntelligenceModel { AgentDashboard = new AgentDashboard() };
 
-            var rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.TOTAL_METRICS);
+            var rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.TOTAL_METRICS);
             report.AgentDashboard.TotalMonthlyBills = AddDashboardMetric(rows[0]);
             report.AgentDashboard.TotalCreditCardBalance = AddDashboardMetric(rows[1]);
             report.AgentDashboard.TotalCreditCardLimit = AddDashboardMetric(rows[2]);
@@ -32,14 +33,14 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             report.AgentDashboard.MaxExtraAllocationRule = AddDashboardMetric(rows[8]);
             report.AgentDashboard.OpenDataQualityIssues = AddDashboardMetric(rows[9]);
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.OVERALL_METRICS);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.OVERALL_METRICS);
 
             report.AgentDashboard.CreditCards = AddOverallMetric(rows[0]);
             report.AgentDashboard.RegularLoans = AddOverallMetric(rows[1]);
             report.AgentDashboard.ShortTermFinancing = AddOverallMetric(rows[0]);
 
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.AGENT_PRIORITIES);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.AGENT_PRIORITIES);
             foreach (var row in rows)
             {
                 report.AgentDashboard.AgentRunPriorities.Add(new AgentRunPriority
@@ -50,7 +51,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.INCOMES);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.INCOMES);
             foreach (var row in rows)
             {
                 report.Incomes.Add(new Income
@@ -67,7 +68,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.MONTHLY_BILLS);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.MONTHLY_BILLS);
             foreach (var row in rows)
             {
                 report.MonthlyBills.Add(new MonthlyBills
@@ -85,7 +86,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.CREDIT_CARDS);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_CARDS);
             foreach (var row in rows)
             {
                 report.CreditCards.Add(new CreditCard
@@ -108,7 +109,28 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.LOANS);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_PROFILES);
+            foreach (var row in rows)
+            {
+                var profile = new CreditProfile
+                {
+                    Person = row.SafeString(0),
+                    Fico8 = row.SafeString(1),
+                    Fico5 = row.SafeString(2),
+                    Fico4 = row.SafeString(3),
+                    Fico2 = row.SafeString(4),
+                    Vantage3_0 = row.SafeString(5),
+                    ScoreDate = row.SafeString(6),
+                    Notes = row.SafeString(7),
+                    DataConfidence = row.SafeString(8)
+                };
+
+                profile.MortgageMiddleScore = profile.CalculateMortgageMiddleScore();
+
+                report.CreditProfiles.Add(profile);
+            }
+
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.LOANS);
             foreach (var row in rows)
             {
                 report.Loans.Add(new Loan
@@ -131,53 +153,53 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.SHORT_TERM_FINANCING);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.SHORT_TERM_FINANCING);
             foreach (var row in rows)
             {
                 report.ShortTermFinancing.Add(new ShortTermFinance
                 {
                     Name = row.SafeString(0),
                     DueDay = row.SafeString(1),
-                    MonthlyPayment = row.SafeString(4),
-                    Balance = row.SafeString(5),
-                    PayOff = row.SafeString(6),
-                    RateAPR = row.SafeString(7),
-                    StarteDate = row.SafeString(8),
-                    EndDate = row.SafeString(9),
-                    Total = row.SafeString(10),
-                    Source = row.SafeString(11),
-                    Notes = row.SafeString(12)
+                    MonthlyPayment = row.SafeString(2),
+                    Balance = row.SafeString(3),
+                    PayOff = row.SafeString(4),
+                    RateAPR = row.SafeString(5),
+                    StarteDate = row.SafeString(6),
+                    EndDate = row.SafeString(7),
+                    Total = row.SafeString(8),
+                    Source = row.SafeString(9),
+                    Notes = row.SafeString(10)
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.PAYCHECK_CASH_FLOW);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.PAYCHECK_CASH_FLOW);
             foreach (var row in rows)
             {
                 report.PaychecCashFlow.Add(new CashFlow
                 {
                     PayDate = row.SafeString(0),
                     NetIncome = row.SafeString(1),
-                    Bonus = row.SafeString(4),
-                    CUTX = row.SafeString(5),
-                    WorkExpenses = row.SafeString(6),
-                    ChasePyN4 = row.SafeString(7),
-                    Mortgage = row.SafeString(8),
-                    Groceries = row.SafeString(9),
-                    Other = row.SafeString(10),
-                    Bills = row.SafeString(11),
-                    CC = row.SafeString(12),
-                    RegularLoans = row.SafeString(13),
-                    ShortTerm = row.SafeString(14),
-                    CalculatedTotalExpense = row.SafeString(15),
-                    AfterExpenses = row.SafeString(16),
-                    Source = row.SafeString(17),
-                    Notes = row.SafeString(18),
-                    TwentiyFivePercentBuffer = row.SafeString(19),
-                    MaxUsableExtraSeventyFivePercent = row.SafeString(20)
+                    Bonus = row.SafeString(2),
+                    CUTX = row.SafeString(3),
+                    WorkExpenses = row.SafeString(4),
+                    ChasePyN4 = row.SafeString(5),
+                    Mortgage = row.SafeString(6),
+                    Groceries = row.SafeString(7),
+                    Other = row.SafeString(8),
+                    Bills = row.SafeString(9),
+                    CC = row.SafeString(10),
+                    RegularLoans = row.SafeString(11),
+                    ShortTerm = row.SafeString(12),
+                    CalculatedTotalExpense = row.SafeString(13),
+                    AfterExpenses = row.SafeString(14),
+                    Source = row.SafeString(15),
+                    Notes = row.SafeString(16),
+                    TwentiyFivePercentBuffer = row.SafeString(17),
+                    MaxUsableExtraSeventyFivePercent = row.SafeString(18)
                 });
             }
 
-            rows = await _documentService.ReadRangeAsync(HFIAgentReport.ReportCells.SHEET_ID, HFIAgentReport.ReportCells.MORTGAGE_REFI_READINESS);
+            rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.MORTGAGE_REFI_READINESS);
             foreach (var row in rows)
             {
                 report.MortgageRefiReadinesses.Add(new MortgageRefiReadiness
@@ -200,9 +222,9 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         {
             return new DashboardMetric
             {
-                Name = row[0].ToString(),
-                Value = row[1].ToString(),
-                Notes = row[2].ToString()
+                Name = row.SafeString(0),
+                Value = row.SafeString(1),
+                Notes = row.SafeString(2)
             };
         }
 
@@ -210,9 +232,9 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         {
             return new OverallMetrics
             {
-                DebtType = row[0].ToString(),
-                Balance = row[1].ToString(),
-                PercentageOfTotal = row[2].ToString()
+                DebtType = row.SafeString(0),
+                Balance = row.SafeString(1),
+                PercentageOfTotal = row.SafeString(2)
             };
         }
     }

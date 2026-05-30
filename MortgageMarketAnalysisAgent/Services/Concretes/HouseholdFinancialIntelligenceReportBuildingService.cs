@@ -160,13 +160,13 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 {
                     Name = row.SafeString(0),
                     DueDay = row.SafeString(1),
-                    MonthlyPayment = row.SafeString(2),
-                    Balance = row.SafeString(3),
-                    PayOff = row.SafeString(4),
-                    RateAPR = row.SafeString(5),
-                    StarteDate = row.SafeString(6),
-                    EndDate = row.SafeString(7),
-                    Total = row.SafeString(8),
+                    Payment = row.SafeString(2),
+                    Frequency = row.SafeString(3),
+                    Balance = row.SafeString(4),
+                    PayOff = row.SafeString(5),
+                    RateAPR = row.SafeString(6),
+                    StarteDate = row.SafeString(7),
+                    EndDate = row.SafeString(8),
                     Source = row.SafeString(9),
                     Notes = row.SafeString(10)
                 });

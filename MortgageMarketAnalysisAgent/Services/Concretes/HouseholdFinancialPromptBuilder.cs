@@ -19,7 +19,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         {
             var prompt = new StringBuilder();
 
-            prompt.AppendLine(TemplateHelper.GetTemplate(HI_FI_TEMPLATE_PATH)
+            prompt.AppendLine(TemplateHelper.GetTemplate(Path.Combine(AppContext.BaseDirectory,HI_FI_TEMPLATE_PATH))
                                             .Replace("[[##ANALYSIS_DATE##]]", $"{DateTime.Today.ToString("MM/dd/yyyy")}"));
 
             prompt.AppendLine();
@@ -30,7 +30,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             prompt.AppendLine(model.CreditProfiles.BuildCreditProfileSummary());
 
             prompt.AppendLine();
-            prompt.AppendLine(TemplateHelper.GetTemplate(ANALYSIS_REPORT_TEMPLATE_PATH));
+            prompt.AppendLine(TemplateHelper.GetTemplate(Path.Combine(AppContext.BaseDirectory, ANALYSIS_REPORT_TEMPLATE_PATH)));
 
             prompt.AppendLine();
             prompt.AppendLine("Here is the full household financial model as JSON:");

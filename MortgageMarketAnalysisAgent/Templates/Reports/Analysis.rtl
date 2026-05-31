@@ -1,0 +1,191 @@
+﻿Report template:
+Use the following exact markdown structure.
+Do not add, remove, rename, or reorder sections.
+Fill every section.
+If a section has no usable data, write "Not provided" or "Uncertain" and explain why.
+
+# Household Financial Intelligence Report
+
+Date: [MM/dd/yyyy CST]
+
+## 1. Executive Summary
+
+| Area | Status | Key Takeaway |
+|---|---|---|
+| Cash Flow |  |  |
+| Credit Utilization |  |  |
+| Mortgage Refinance Readiness |  |  |
+| Data Quality |  |  |
+| Recommended Next Action |  |  |
+
+Summary:
+- 
+- 
+- 
+
+## 2. Current Financial Position
+
+| Metric | Value | Notes |
+|---|---:|---|
+| Total Monthly Bills |  |  |
+| Total Credit Card Balance |  |  |
+| Total Credit Card Limit |  |  |
+| Overall Credit Utilization |  |  |
+| Total Regular Loan Balance |  |  |
+| Total Short-Term Balance |  |  |
+
+## 3. Cash-Flow Safety Assessment
+
+| Pay Date / Period | Income | Required Expenses | After Expenses | 25% Buffer | Max Usable Extra |
+|---|---:|---:|---:|---:|---:|
+|  |  |  |  |  |  |
+
+Cash-flow assessment:
+- 
+- 
+- 
+
+## 4. Credit Utilization Risks
+
+| Card | Balance | Limit | Utilization | Risk Level | Recommended Action |
+|---|---:|---:|---:|---|---|
+|  |  |  |  |  |  |
+
+Utilization priority:
+1. 
+2. 
+3. 
+
+## 5. Credit Profile and Mortgage Score Readiness
+
+| Person | FICO 5 | FICO 4 | FICO 2 | Mortgage Middle Score | Score Date | Confidence | Notes |
+|---|---:|---:|---:|---:|---|---|---|
+|  |  |  |  |  |  |  |  |
+
+Mortgage score readiness:
+- Conservative household planning score: 
+- Target mortgage score: 
+- Readiness status: 
+
+## 6. Mortgage Refinance Readiness
+
+| Input | Value | Status Interpretation | Notes |
+|---|---:|---|---|
+| First Mortgage Balance |  |  |  |
+| First Mortgage Rate |  |  |  |
+| Term Remaining |  |  |  |
+| P&I Payment |  |  |  |
+| Escrow |  |  |  |
+| Second Mortgage Balance |  |  |  |
+| Second Mortgage Payment |  |  |  |
+| Second Mortgage Rate |  |  |  |
+| Target Refinance Month |  |  |  |
+| Target Minimum Mortgage FICO |  |  |  |
+
+Refinance readiness assessment:
+- 
+- 
+- 
+
+## 7. Recommended Payment Allocation
+
+| Priority | Target | Recommended Amount | Reason |
+|---:|---|---:|---|
+| 1 |  |  |  |
+| 2 |  |  |  |
+| 3 |  |  |  |
+
+Allocation rules applied:
+- Minimum payments first.
+- No more than 75% of positive after-expense cash.
+- Preserve 25% buffer.
+
+## 8. Upcoming Pay-Cycle Cash-Flow & Payment Pressure Analysis
+
+| Metric | Value | Notes |
+|---|---:|---|
+| Upcoming Pay Date |  |  |
+| Expected Net Income |  |  |
+| Required Payments Before Next Paycheck |  |  |
+| Remaining Cash After Required Payments |  |  |
+| Recommended Extra Payment Allocation |  |  |
+| Pay-Cycle Utilization % |  |  |
+| Utilization Classification |  | Low / Medium / High |
+
+### Upcoming Pay-Cycle Assessment
+
+- 
+- 
+- 
+
+### Mandatory Upcoming Payments
+
+| Obligation | Due Date | Amount | Priority | Refinance-Readiness Risk |
+|---|---|---:|---|---|
+|  |  |  | Critical / High / Medium / Low |  |
+
+Priority definitions:
+- Critical = must be paid
+- High = strongly recommended
+- Medium = operationally important
+- Low = flexible if necessary
+
+### Upcoming Pay-Cycle Itemized Payments 
+| Due Date | Payment | Category | Amount | Required | Refinance Risk | Recommendation | 
+|---|---|---|---:|---|---|---|
+|  |  | Mortgage / Credit Card / Loan / Utility | | Yes / No | High / Medium / Low | Pay / Delay / Minimum Only |
+
+
+### Recommended Payment Strategy
+
+#### Immediate Actions Before Next Paycheck
+- 
+- 
+- 
+
+#### Suggested Extra-Payment Allocation
+
+| Target | Recommended Amount | Reason |
+|---|---:|---|
+|  |  |  |
+
+#### Refinance-Readiness Preservation Actions
+- 
+- 
+- 
+
+### Utilization Pressure Relief Opportunities
+(Only include this subsection if utilization classification is High)
+
+| Pressure Driver | Impact | Possible Future Relief |
+|---|---|---|
+|  |  |  |
+
+Pressure-relief assessment:
+- 
+- 
+- 
+
+## 9. What Not To Do
+
+- 
+- 
+- 
+
+## 10. Questions or Missing Data
+
+| Item | Why It Matters | Impact |
+|---|---|---|
+|  |  |  |
+
+## 11. Next Update Checklist
+
+- [ ] 
+- [ ] 
+- [ ] 
+
+## 12. Data Quality Notes
+
+| Issue | Location / Field | Recommended Fix |
+|---|---|---|
+|  |  |  |     

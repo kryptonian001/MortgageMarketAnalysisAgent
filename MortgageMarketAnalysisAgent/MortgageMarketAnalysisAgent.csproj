@@ -12,6 +12,8 @@
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="client_secret.json" />
+    <None Remove="Templates\Prompts\HiFi.pmt" />
+    <None Remove="Templates\Reports\Analysis.rtl" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +21,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="client_secret.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Prompts\HiFi.pmt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Templates\Reports\Analysis.rtl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

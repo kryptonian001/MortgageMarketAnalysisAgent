@@ -23,12 +23,12 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 
         static MarkdownPipeline pipeline;
 
-        public GoogleNotificationService(UserCredential credential)
+        public GoogleNotificationService(UserCredential credential, AgentConfig? config)
         {
             var init = new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
-                ApplicationName = "MortgageMarketAnalysisAgent"
+                ApplicationName = config.ApplicationName ?? ""
             };
 
             gmailService = new GmailService(init);

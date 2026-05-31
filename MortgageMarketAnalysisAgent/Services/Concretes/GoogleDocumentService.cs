@@ -3,6 +3,8 @@ using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using Microsoft.Extensions.Options;
+using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Models.Tasks;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
 using System;
@@ -16,12 +18,12 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         private readonly DocsService docsService;
         private readonly SheetsService sheetsService;
 
-        public GoogleDocumentService(UserCredential credential)
+        public GoogleDocumentService(UserCredential credential, AgentConfig? config)
         {
             var init = new BaseClientService.Initializer
             {
                 HttpClientInitializer = credential,
-                ApplicationName = "MortgageMarketAnalysisAgent"
+                ApplicationName = config?.ApplicationName ?? ""
             };
 
             docsService = new DocsService(init);

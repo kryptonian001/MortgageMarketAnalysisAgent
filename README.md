@@ -100,12 +100,96 @@ Before running the agent, ensure you have:
 
 ### 2. Application Settings
 
-Configure the agent using either `appsettings.json` or User Secrets:
+Configure the agent using **User Secrets** (recommended for development) or **Environment Variables** (recommended for production). The `appsettings.json` file is intentionally kept empty for security best practices.
 
-**appsettings.json:**
+#### Configuration Properties
+
+The agent requires the following configuration settings:
+
+| Property | Description | Required |
+|----------|-------------|----------|
+| `ApplicationName` | Name of the application for Google API identification | Yes |
+| `GoogleConfigPath` | Full path to the `client_secret.json` OAuth credentials file | Yes |
+| `NotificationEmail` | Email address to receive analysis reports | Yes |
+| `OpenAIKey` | OpenAI API key with access to GPT-4.1-mini | Yes |
+
+#### Using User Secrets (Recommended for Development)
+
+User Secrets provide secure storage for sensitive configuration during development:
+
+```bash
+# Initialize user secrets (if not already done)
+dotnet user-secrets init --project MortgageMarketAnalysisAgent
+
+# Set configuration values
+dotnet user-secrets set "AgentConfig:ApplicationName" "Mortgage Analysis Agent" --project MortgageMarketAnalysisAgent
+dotnet user-secrets set "AgentConfig:GoogleConfigPath" "C:\path\to\client_secret.json" --project MortgageMarketAnalysisAgent
+dotnet user-secrets set "AgentConfig:NotificationEmail" "your-email@example.com" --project MortgageMarketAnalysisAgent
+dotnet user-secrets set "AgentConfig:OpenAIKey" "sk-your-openai-api-key" --project MortgageMarketAnalysisAgent
+```
+
+**View your secrets:**
+```bash
+dotnet user-secrets list --project MortgageMarketAnalysisAgent
+```
+
+**Remove a secret:**
+```bash
+dotnet user-secrets remove "AgentConfig:OpenAIKey" --project MortgageMarketAnalysisAgent
+```
+
+**Clear all secrets:**
+```bash
+dotnet user-secrets clear --project MortgageMarketAnalysisAgent
+```
+
+#### Using Environment Variables (Recommended for Production)
+
+Environment variables are ideal for production deployments and CI/CD pipelines:
+
+**Windows (PowerShell):**
+```powershell
+$env:AgentConfig__ApplicationName = "Mortgage Analysis Agent"
+$env:AgentConfig__GoogleConfigPath = "C:\path\to\client_secret.json"
+$env:AgentConfig__NotificationEmail = "your-email@example.com"
+$env:AgentConfig__OpenAIKey = "sk-your-openai-api-key"
+```
+
+**Windows (Command Prompt):**
+```cmd
+set AgentConfig__ApplicationName=Mortgage Analysis Agent
+set AgentConfig__GoogleConfigPath=C:\path\to\client_secret.json
+set AgentConfig__NotificationEmail=your-email@example.com
+set AgentConfig__OpenAIKey=sk-your-openai-api-key
+```
+
+**Linux/Mac:**
+```bash
+export AgentConfig__ApplicationName="Mortgage Analysis Agent"
+export AgentConfig__GoogleConfigPath="/path/to/client_secret.json"
+export AgentConfig__NotificationEmail="your-email@example.com"
+export AgentConfig__OpenAIKey="sk-your-openai-api-key"
+```
+
+**Docker Environment Variables:**
+```bash
+docker run -d \
+  -v /path/to/client_secret.json:/app/client_secret.json \
+  -e AgentConfig__ApplicationName="Mortgage Analysis Agent" \
+  -e AgentConfig__GoogleConfigPath="/app/client_secret.json" \
+  -e AgentConfig__NotificationEmail="your-email@example.com" \
+  -e AgentConfig__OpenAIKey="sk-your-openai-api-key" \
+  mortgage-analysis-agent
+```
+
+#### Using appsettings.json (Not Recommended)
+
+While `appsettings.json` can be used for configuration, it is **strongly discouraged** for security reasons. If you must use it:
+
 ```json
 {
   "AgentConfig": {
+    "ApplicationName": "Mortgage Analysis Agent",
     "GoogleConfigPath": "path/to/client_secret.json",
     "NotificationEmail": "your-email@example.com",
     "OpenAIKey": "sk-your-openai-api-key"
@@ -113,20 +197,7 @@ Configure the agent using either `appsettings.json` or User Secrets:
 }
 ```
 
-**Using User Secrets (Recommended for development):**
-```bash
-dotnet user-secrets init
-dotnet user-secrets set "AgentConfig:GoogleConfigPath" "path/to/client_secret.json"
-dotnet user-secrets set "AgentConfig:NotificationEmail" "your-email@example.com"
-dotnet user-secrets set "AgentConfig:OpenAIKey" "sk-your-openai-api-key"
-```
-
-**Using Environment Variables (Recommended for production):**
-```bash
-export AgentConfig__GoogleConfigPath="path/to/client_secret.json"
-export AgentConfig__NotificationEmail="your-email@example.com"
-export AgentConfig__OpenAIKey="sk-your-openai-api-key"
-```
+⚠️ **Warning:** Never commit `appsettings.json` with actual credentials to version control!
 
 ### 3. Google Sheets Setup
 

@@ -7,6 +7,7 @@ namespace MortgageMarketAnalysisAgent.Models.Config
 {
     public class AgentConfig
     {
+        public string ApplicationName { get; set; }
         public string GoogleConfigPath { get; set; }
         public string OpenAiKey { get; set; }
         public string NotificationEmail { get; set; }

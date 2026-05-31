@@ -26,7 +26,7 @@ namespace MortgageMarketAnalysisAgent.Helpers
             var builder = new ConfigurationBuilder();
 
             var config = builder.AddUserSecrets<Program>()
-                                .AddJsonFile("appsettings.json")
+                                .AddJsonFile(Path.Combine(AppContext.BaseDirectory,"appsettings.json"))
                                 .AddEnvironmentVariables()
                                 .Build();
 
@@ -40,8 +40,8 @@ namespace MortgageMarketAnalysisAgent.Helpers
 
             var creds = await GetGoogleCredentials();
 
-            services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds));
-            services.AddTransient<INotify,GoogleNotificationService>((sp) => new GoogleNotificationService(creds));
+            services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds, googleClientCfg));
+            services.AddTransient<INotify,GoogleNotificationService>((sp) => new GoogleNotificationService(creds, googleClientCfg));
 
             services.AddTransient<HouseholdFinancialIntelligenceReportBuildingService>();
 

@@ -1,0 +1,46 @@
+Summary
+  Generated on: 5/30/2026 - 11:41:05 PM
+  Coverage date: 5/30/2026 - 11:33:51 PM - 5/30/2026 - 11:40:39 PM
+  Parser: MultiReport (5x Cobertura)
+  Assemblies: 1
+  Classes: 24
+  Files: 24
+  Line coverage: 41.3%
+  Covered lines: 293
+  Uncovered lines: 415
+  Coverable lines: 708
+  Total lines: 1163
+  Branch coverage: 61.7% (42 of 68)
+  Covered branches: 42
+  Total branches: 68
+  Method coverage: 89.7% (149 of 166)
+  Full method coverage: 89.1% (148 of 166)
+  Covered methods: 149
+  Fully covered methods: 148
+  Total methods: 166
+
+MortgageMarketAnalysisAgent                                                                            41.3%
+  MortgageMarketAnalysisAgent.Agents.Concretes.MarketAnalysisAgent                                     84.6%
+  MortgageMarketAnalysisAgent.Helpers.GoogleSheetHelpers                                                100%
+  MortgageMarketAnalysisAgent.Helpers.ServiceCollectionExtensions                                         0%
+  MortgageMarketAnalysisAgent.Helpers.TemplateHelper                                                    100%
+  MortgageMarketAnalysisAgent.Models.Config.AgentConfig                                                 100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.AgentDashboard                                100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.AgentRunPriority                              100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.CashFlow                                      100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.CreditCard                                    100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.CreditProfile                                 100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.DashboardMetric                               100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.Income                                        100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.Loan                                          100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.MonthlyBills                                  100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.MortgageRefiReadiness                         100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.OverallMetrics                                100%
+  MortgageMarketAnalysisAgent.Models.Documents.Components.ShortTermFinance                              100%
+  MortgageMarketAnalysisAgent.Models.Documents.HouseholdFinancialIntelligenceModel                     42.8%
+  MortgageMarketAnalysisAgent.Program                                                                     0%
+  MortgageMarketAnalysisAgent.Services.Concretes.GoogleDocumentService                                 47.8%
+  MortgageMarketAnalysisAgent.Services.Concretes.GoogleNotificationService                                0%
+  MortgageMarketAnalysisAgent.Services.Concretes.HouseholdFinancialIntelligenceReportBuildingService    2.3%
+  MortgageMarketAnalysisAgent.Services.Concretes.HouseholdFinancialPromptBuilder                        100%
+  MortgageMarketAnalysisAgent.Services.Concretes.MarketAnalysisService                                  100%

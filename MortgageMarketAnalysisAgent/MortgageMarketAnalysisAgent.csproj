@@ -44,6 +44,7 @@
 
 	  <PackageReference Include="Octokit" Version="14.0.0" />
 	  <PackageReference Include="OpenAI" Version="2.10.0" />
+	  <PackageReference Include="Polly" Version="8.6.6" />
 	  <PackageReference Include="System.CommandLine" Version="3.0.0-preview.3.26207.106" />
   </ItemGroup>
 

@@ -12,17 +12,24 @@ namespace MortgageMarketAnalysisAgent
     {
         static async Task Main(string[] args)
         {
-            var builder = Host.CreateApplicationBuilder(args);
+            try
+            {
+                var builder = Host.CreateApplicationBuilder(args);
 
-            await builder.Services.AddAgentConfigurationAsync();
+                await builder.Services.AddAgentConfigurationAsync();
 
-            builder.Logging.AddConsole();
-            
-            using var host = builder.Build();
+                builder.Logging.AddConsole();
 
-            var scRunner = host.Services.GetRequiredService<IMarketAnalysisService>();
+                using var host = builder.Build();
 
-            await scRunner.RunAnalysis();
+                var scRunner = host.Services.GetRequiredService<IMarketAnalysisService>();
+
+                await scRunner.RunAnalysis();
+            }
+            catch(Exception ex)
+            {
+                Console.Error.WriteLine($"Fatal error: {ex.Message}");
+            }
         }
     }
 }

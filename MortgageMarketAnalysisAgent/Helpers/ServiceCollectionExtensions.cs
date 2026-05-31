@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using MortgageMarketAnalysisAgent.Agents.Concretes;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
 using MortgageMarketAnalysisAgent.Models.Config;
+using MortgageMarketAnalysisAgent.Resilience;
 using MortgageMarketAnalysisAgent.Services.Concretes;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
 using System;
@@ -36,6 +37,9 @@ namespace MortgageMarketAnalysisAgent.Helpers
             googleClientCfg = cfg.Get<AgentConfig>();
 
             services.Configure<AgentConfig>(cfg);
+
+            // Register Resilience Pipeline Provider
+            services.AddSingleton<ResiliencePipelineProvider>();
 
             services.AddTransient<IMarketAnalysisService, MarketAnalysisService>();
 

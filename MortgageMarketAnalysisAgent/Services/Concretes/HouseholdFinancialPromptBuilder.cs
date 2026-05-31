@@ -10,7 +10,7 @@ using System.Text;
 
 namespace MortgageMarketAnalysisAgent.Services.Concretes
 {
-    internal class HouseholdFinancialPromptBuilder : IPromptBuilder
+    public class HouseholdFinancialPromptBuilder : IPromptBuilder
     {
         private readonly ILogger<HouseholdFinancialPromptBuilder> _logger;
 

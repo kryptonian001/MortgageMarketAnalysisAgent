@@ -48,7 +48,7 @@ namespace MortgageMarketAnalysisAgent.Helpers
             services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds, googleClientCfg, sp.GetRequiredService<ILogger<GoogleDocumentService>>()));
             services.AddTransient<INotify,GoogleNotificationService>((sp) => new GoogleNotificationService(creds, googleClientCfg, sp.GetRequiredService<ILogger<GoogleNotificationService>>()));
 
-            services.AddTransient<HouseholdFinancialIntelligenceReportBuildingService>();
+            services.AddTransient<IReportBuildingService, HouseholdFinancialIntelligenceReportBuildingService>();
 
             services.AddTransient<IPromptBuilder, HouseholdFinancialPromptBuilder>();
 

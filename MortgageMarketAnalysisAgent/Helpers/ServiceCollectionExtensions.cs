@@ -7,6 +7,7 @@ using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using MortgageMarketAnalysisAgent.Agents.Concretes;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
 using MortgageMarketAnalysisAgent.Models.Config;
@@ -40,14 +41,15 @@ namespace MortgageMarketAnalysisAgent.Helpers
 
             var creds = await GetGoogleCredentials();
 
-            services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds, googleClientCfg));
-            services.AddTransient<INotify,GoogleNotificationService>((sp) => new GoogleNotificationService(creds, googleClientCfg));
+            services.AddTransient<GoogleDocumentService>((sp) => new GoogleDocumentService(creds, googleClientCfg, sp.GetRequiredService<ILogger<GoogleDocumentService>>()));
+            services.AddTransient<INotify,GoogleNotificationService>((sp) => new GoogleNotificationService(creds, googleClientCfg, sp.GetRequiredService<ILogger<GoogleNotificationService>>()));
 
             services.AddTransient<HouseholdFinancialIntelligenceReportBuildingService>();
 
             services.AddTransient<IPromptBuilder, HouseholdFinancialPromptBuilder>();
 
             services.AddTransient<IAgent, MarketAnalysisAgent>();
+                                            
         }
 
         private static async Task<UserCredential> GetGoogleCredentials()

@@ -1,4 +1,5 @@
-﻿using MortgageMarketAnalysisAgent.Helpers;
+﻿using Microsoft.Extensions.Logging;
+using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Documents;
 using MortgageMarketAnalysisAgent.Models.Documents.Components;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
@@ -11,16 +12,19 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
     public class HouseholdFinancialIntelligenceReportBuildingService : IReportBuildingService
     {
         private readonly GoogleDocumentService _documentService;
+        private readonly ILogger<HouseholdFinancialIntelligenceReportBuildingService> _logger;
 
-        public HouseholdFinancialIntelligenceReportBuildingService(GoogleDocumentService documentService)
+        public HouseholdFinancialIntelligenceReportBuildingService(GoogleDocumentService documentService, ILogger<HouseholdFinancialIntelligenceReportBuildingService> logger)
         {
             _documentService = documentService;
+            _logger = logger;
         }
 
         public async Task<HouseholdFinancialIntelligenceModel> BuildHouseholdFinancialIntelligenceReport()
         {
             HouseholdFinancialIntelligenceModel report = new HouseholdFinancialIntelligenceModel { AgentDashboard = new AgentDashboard() };
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.TOTAL_METRICS));
             var rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.TOTAL_METRICS);
             report.AgentDashboard.TotalMonthlyBills = AddDashboardMetric(rows[0]);
             report.AgentDashboard.TotalCreditCardBalance = AddDashboardMetric(rows[1]);
@@ -33,13 +37,14 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             report.AgentDashboard.MaxExtraAllocationRule = AddDashboardMetric(rows[8]);
             report.AgentDashboard.OpenDataQualityIssues = AddDashboardMetric(rows[9]);
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.OVERALL_METRICS));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.OVERALL_METRICS);
 
             report.AgentDashboard.CreditCards = AddOverallMetric(rows[0]);
             report.AgentDashboard.RegularLoans = AddOverallMetric(rows[1]);
             report.AgentDashboard.ShortTermFinancing = AddOverallMetric(rows[0]);
 
-
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.AGENT_PRIORITIES));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.AGENT_PRIORITIES);
             foreach (var row in rows)
             {
@@ -51,6 +56,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.INCOMES));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.INCOMES);
             foreach (var row in rows)
             {
@@ -68,6 +74,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.MONTHLY_BILLS));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.MONTHLY_BILLS);
             foreach (var row in rows)
             {
@@ -86,6 +93,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_CARDS));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_CARDS);
             foreach (var row in rows)
             {
@@ -109,6 +117,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_PROFILES));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.CREDIT_PROFILES);
             foreach (var row in rows)
             {
@@ -130,6 +139,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 report.CreditProfiles.Add(profile);
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.LOANS));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.LOANS);
             foreach (var row in rows)
             {
@@ -153,6 +163,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.SHORT_TERM_FINANCING));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.SHORT_TERM_FINANCING);
             foreach (var row in rows)
             {
@@ -172,6 +183,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.PAYCHECK_CASH_FLOW));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.PAYCHECK_CASH_FLOW);
             foreach (var row in rows)
             {
@@ -199,6 +211,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 });
             }
 
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.MORTGAGE_REFI_READINESS));
             rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.MORTGAGE_REFI_READINESS);
             foreach (var row in rows)
             {

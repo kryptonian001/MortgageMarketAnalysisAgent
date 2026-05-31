@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
 using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Config;
@@ -17,6 +18,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         private readonly IPromptBuilder _promptBuilder;
         private readonly IAgent _agent;
         private readonly INotify _notifier;
+        private readonly ILogger<MarketAnalysisService> _logger;
 
         string? emailAddress;
 
@@ -25,31 +27,33 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             IPromptBuilder promptBuilder,
             IAgent agent,
             INotify notifier,
-            IOptions<AgentConfig> options) 
+            IOptions<AgentConfig> options,
+            ILogger<MarketAnalysisService> logger) 
         {
             _reportBuidService = reportBuilding;
             _promptBuilder = promptBuilder;
             _agent = agent;
             _notifier = notifier;
+            _logger = logger;
 
             emailAddress = options?.Value.NotificationEmail;
         }
 
         public async Task RunAnalysis()
         {
-            Console.WriteLine("Retrieving Household_Financial_Intelligence_Agent_Ready spreadsheet");
+            _logger.LogInformation("Retrieving Household_Financial_Intelligence_Agent_Ready spreadsheet");
             var model = await _reportBuidService.BuildHouseholdFinancialIntelligenceReport();
 
-            Console.WriteLine("Building market analysis prompt with Household_Financial_Intelligence_Agent_Ready infromation");
+            _logger.LogInformation("Building market analysis prompt with Household_Financial_Intelligence_Agent_Ready infromation");
             var prompt = _promptBuilder.BuilPrompt(model);
 
-            Console.WriteLine("Sending promp to ChatGPT");
+            _logger.LogInformation("Sending promp to ChatGPT");
             var analysis = await _agent.RunAnalysisAsync(prompt);
 
-            Console.WriteLine("Results:");
-            Console.WriteLine(analysis);
+            _logger.LogInformation("Results:");
+            _logger.LogInformation(analysis);
 
-            Console.WriteLine($"Sending to email: {emailAddress}");
+            _logger.LogInformation($"Sending to email: {emailAddress}");
             await _notifier.SendEmailNotificationAsync(emailAddress, "Mortgage Refi Readiness Analysis", analysis);
         }
     }

@@ -1,4 +1,5 @@
-﻿using MortgageMarketAnalysisAgent.Helpers;
+﻿using Microsoft.Extensions.Logging;
+using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Documents;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
 using Newtonsoft.Json;
@@ -11,14 +12,23 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 {
     internal class HouseholdFinancialPromptBuilder : IPromptBuilder
     {
-        const string ANALYSIS_REPORT_TEMPLATE_PATH = @"templates\reports\analysis.rtl";
+        private readonly ILogger<HouseholdFinancialPromptBuilder> _logger;
 
+        const string ANALYSIS_REPORT_TEMPLATE_PATH = @"templates\reports\analysis.rtl";
         const string HI_FI_TEMPLATE_PATH = @"templates\prompts\hifi.pmt";
+
+
+
+        public HouseholdFinancialPromptBuilder(ILogger<HouseholdFinancialPromptBuilder> logger)
+        {
+            _logger = logger;
+        }
 
         public string BuilPrompt(HouseholdFinancialIntelligenceModel model)
         {
             var prompt = new StringBuilder();
 
+            _logger.LogInformation("Building Prompt");
             prompt.AppendLine(TemplateHelper.GetTemplate(Path.Combine(AppContext.BaseDirectory,HI_FI_TEMPLATE_PATH))
                                             .Replace("[[##ANALYSIS_DATE##]]", $"{DateTime.Today.ToString("MM/dd/yyyy")}"));
 
@@ -38,6 +48,8 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             prompt.AppendLine("```json");
             prompt.AppendLine(model.GetFullModelReport());
             prompt.AppendLine("```");
+
+            _logger.LogInformation("Prompt Complete");
 
             return prompt.ToString();
         }

@@ -16,6 +16,8 @@ namespace MortgageMarketAnalysisAgent
 
             await builder.Services.AddAgentConfigurationAsync();
 
+            builder.Logging.AddConsole();
+            
             using var host = builder.Build();
 
             var scRunner = host.Services.GetRequiredService<IMarketAnalysisService>();

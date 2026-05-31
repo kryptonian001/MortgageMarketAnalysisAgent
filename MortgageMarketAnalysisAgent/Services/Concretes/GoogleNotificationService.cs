@@ -5,6 +5,7 @@ using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4.Data;
 using Markdig;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
@@ -20,10 +21,11 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
     public class GoogleNotificationService : INotify
     {
         private readonly GmailService gmailService;
+        private readonly ILogger<GoogleNotificationService> _logger;
 
         static MarkdownPipeline pipeline;
 
-        public GoogleNotificationService(UserCredential credential, AgentConfig? config)
+        public GoogleNotificationService(UserCredential credential, AgentConfig? config, ILogger<GoogleNotificationService> logger)
         {
             var init = new BaseClientService.Initializer
             {
@@ -36,10 +38,13 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             pipeline = new MarkdownPipelineBuilder()
                             .UseAdvancedExtensions()
                             .Build();
+
+            _logger = logger;
         }
 
         public async Task SendEmailNotificationAsync(string emailAddress, string subject, string body)
         {
+            _logger.LogInformation("Building email report");
             var bodyHtml = BuildHtmlMessage(body);
             bodyHtml = StyleMarkdownHtml(bodyHtml);
 
@@ -50,10 +55,13 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 Raw = Base64UrlEncode(rawMessage)
             };
 
+            _logger.LogInformation("Sending email report");
             await gmailService.Users
                               .Messages
                               .Send(message, "me")
                               .ExecuteAsync();
+
+            _logger.LogInformation("Email report sent");
         }
 
         private static string BuildHtmlMessage(string body)

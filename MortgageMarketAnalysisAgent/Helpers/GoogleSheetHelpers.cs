@@ -13,7 +13,7 @@ namespace MortgageMarketAnalysisAgent.Helpers
         {
             try
             {
-                return row[index].ToString();
+                return row[index]?.ToString() ?? "";
             }
             catch (ArgumentOutOfRangeException)
             {

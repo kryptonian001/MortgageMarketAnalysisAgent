@@ -3,6 +3,7 @@ using Google.Apis.Docs.v1;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Models.Tasks;
@@ -17,8 +18,9 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
     {
         private readonly DocsService docsService;
         private readonly SheetsService sheetsService;
+        private readonly ILogger<GoogleDocumentService> _logger;
 
-        public GoogleDocumentService(UserCredential credential, AgentConfig? config)
+        public GoogleDocumentService(UserCredential credential, AgentConfig? config, ILogger<GoogleDocumentService> logger)
         {
             var init = new BaseClientService.Initializer
             {
@@ -29,6 +31,8 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             docsService = new DocsService(init);
 
             sheetsService = new SheetsService(init);
+
+            _logger = logger;
         }
 
         public async Task<string> ReadDocument(string docId)
@@ -38,6 +42,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 
         public async Task<IList<IList<object>>> ReadRangeAsync(string sheetId, string range)
         {
+            _logger.LogInformation($"Pulling data form range: {range}");
             SpreadsheetsResource.ValuesResource.GetRequest request =
                  sheetsService.Spreadsheets.Values.Get(sheetId, range);
 

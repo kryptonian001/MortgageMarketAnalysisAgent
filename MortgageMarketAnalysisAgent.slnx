@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="MortgageMarketAnalysisAgent.Tests/MortgageMarketAnalysisAgent.Tests.csproj" />
   <Project Path="MortgageMarketAnalysisAgent/MortgageMarketAnalysisAgent.csproj" />
 </Solution>

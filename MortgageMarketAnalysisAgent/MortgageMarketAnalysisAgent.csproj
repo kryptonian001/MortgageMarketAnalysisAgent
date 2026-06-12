@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="client_secret.json" />
     <None Remove="Templates\Prompts\HiFi.pmt" />
@@ -46,10 +52,6 @@
 	  <PackageReference Include="OpenAI" Version="2.10.0" />
 	  <PackageReference Include="Polly" Version="8.6.6" />
 	  <PackageReference Include="System.CommandLine" Version="3.0.0-preview.3.26207.106" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

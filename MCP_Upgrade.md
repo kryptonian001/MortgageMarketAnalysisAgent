@@ -161,3 +161,313 @@ var result = await kernel.InvokePromptAsync(
 ---
 
 **Want me to create a plan to refactor your code to use MCP and Skills properly?** I can break it down into small, manageable steps!
+// MortgageMarketAnalysisAgent/MCP/Servers/GoogleSheetsMCPServer.cs
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
+using Microsoft.Extensions.Logging;
+using MortgageMarketAnalysisAgent.Models.Config;
+
+namespace MortgageMarketAnalysisAgent.MCP.Servers
+{
+    /// <summary>
+    /// MCP Server for Google Sheets
+    /// Think of this as a "waiter" that knows how to talk to Google Sheets
+    /// The AI can ask this server to fetch data, and it handles all the details
+    /// </summary>
+    public class GoogleSheetsMCPServer
+    {
+        private readonly SheetsService _sheetsService;
+        private readonly ILogger<GoogleSheetsMCPServer> _logger;
+        private readonly string _spreadsheetId;
+
+        public GoogleSheetsMCPServer(
+            UserCredential credential, 
+            AgentConfig config, 
+            ILogger<GoogleSheetsMCPServer> logger)
+        {
+            _logger = logger;
+            
+            // Initialize Google Sheets service (same as before)
+            var init = new BaseClientService.Initializer
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = config.ApplicationName
+            };
+
+            _sheetsService = new SheetsService(init);
+            
+            // TODO: Get this from config instead of hardcoding
+            _spreadsheetId = "your-spreadsheet-id";
+        }
+
+        // ============================================
+        // MCP TOOLS - These are the "actions" the AI can call
+        // ============================================
+
+        /// <summary>
+        /// Tool: Read a range of cells from a Google Sheet
+        /// The AI can call this to get data it needs
+        /// </summary>
+        /// <param name="sheetName">Name of the sheet tab (e.g., "Income", "Credit Cards")</param>
+        /// <param name="range">Cell range (e.g., "A1:E10")</param>
+        /// <returns>Data from the sheet</returns>
+        public async Task<SheetData> ReadRangeAsync(string sheetName, string range)
+        {
+            _logger.LogInformation($"🔍 MCP Tool Called: ReadRange('{sheetName}', '{range}')");
+
+            try
+            {
+                // Build the full range string: "SheetName!A1:E10"
+                string fullRange = $"{sheetName}!{range}";
+
+                // Call Google Sheets API
+                var request = _sheetsService.Spreadsheets.Values.Get(_spreadsheetId, fullRange);
+                var response = await request.ExecuteAsync();
+
+                // Convert to simple format
+                var sheetData = new SheetData
+                {
+                    SheetName = sheetName,
+                    Range = range,
+                    Rows = ConvertToRows(response.Values),
+                    RowCount = response.Values?.Count ?? 0
+                };
+
+                _logger.LogInformation($"✅ Retrieved {sheetData.RowCount} rows from {sheetName}");
+                return sheetData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"❌ Error reading range: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Tool: Get all sheet names in the spreadsheet
+        /// Useful for the AI to discover what data is available
+        /// </summary>
+        public async Task<List<string>> GetSheetNamesAsync()
+        {
+            _logger.LogInformation("🔍 MCP Tool Called: GetSheetNames()");
+
+            try
+            {
+                var request = _sheetsService.Spreadsheets.Get(_spreadsheetId);
+                var spreadsheet = await request.ExecuteAsync();
+
+                var sheetNames = spreadsheet.Sheets
+                    .Select(s => s.Properties.Title)
+                    .ToList();
+
+                _logger.LogInformation($"✅ Found {sheetNames.Count} sheets");
+                return sheetNames;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"❌ Error getting sheet names: {ex.Message}");
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Tool: Read a specific sheet with smart detection of data range
+        /// Reads from A1 to the last cell with data
+        /// </summary>
+        public async Task<SheetData> ReadFullSheetAsync(string sheetName)
+        {
+            _logger.LogInformation($"🔍 MCP Tool Called: ReadFullSheet('{sheetName}')");
+
+            try
+            {
+                // Get the full sheet (Google API automatically detects the range)
+                var request = _sheetsService.Spreadsheets.Values.Get(_spreadsheetId, sheetName);
+                var response = await request.ExecuteAsync();
+
+                var sheetData = new SheetData
+                {
+                    SheetName = sheetName,
+                    Range = "Full Sheet",
+                    Rows = ConvertToRows(response.Values),
+                    RowCount = response.Values?.Count ?? 0
+                };
+
+                _logger.LogInformation($"✅ Retrieved {sheetData.RowCount} rows from {sheetName}");
+                return sheetData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"❌ Error reading full sheet: {ex.Message}");
+                throw;
+            }
+        }
+
+        // ============================================
+        // HELPER METHODS
+        // ============================================
+
+        /// <summary>
+        /// Convert Google Sheets response format to simple row format
+        /// </summary>
+        private List<SheetRow> ConvertToRows(IList<IList<object>>? values)
+        {
+            if (values == null || values.Count == 0)
+                return new List<SheetRow>();
+
+            var rows = new List<SheetRow>();
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                var row = new SheetRow
+                {
+                    RowNumber = i + 1,
+                    Cells = values[i].Select(cell => cell?.ToString() ?? string.Empty).ToList()
+                };
+                rows.Add(row);
+            }
+
+            return rows;
+        }
+    }
+
+    // ============================================
+    // DATA MODELS - Simple structures for data
+    // ============================================
+
+    /// <summary>
+    /// Represents data from a Google Sheet
+    /// </summary>
+    public class SheetData
+    {
+        public string SheetName { get; set; } = string.Empty;
+        public string Range { get; set; } = string.Empty;
+        public List<SheetRow> Rows { get; set; } = new();
+        public int RowCount { get; set; }
+
+        /// <summary>
+        /// Get header row (first row)
+        /// </summary>
+        public List<string> GetHeaders()
+        {
+            return Rows.FirstOrDefault()?.Cells ?? new List<string>();
+        }
+
+        /// <summary>
+        /// Get data rows (excluding header)
+        /// </summary>
+        public List<SheetRow> GetDataRows()
+        {
+            return Rows.Skip(1).ToList();
+        }
+    }
+
+    /// <summary>
+    /// Represents a single row in a sheet
+    /// </summary>
+    public class SheetRow
+    {
+        public int RowNumber { get; set; }
+        public List<string> Cells { get; set; } = new();
+
+        /// <summary>
+        /// Get cell value by column index
+        /// </summary>
+        public string GetCell(int columnIndex)
+        {
+            return columnIndex < Cells.Count ? Cells[columnIndex] : string.Empty;
+        }
+    }
+}
+
+// In ServiceCollectionExtensions.cs
+
+public static async Task AddAgentConfigurationAsync(this IServiceCollection services)
+{
+    // ... existing code ...
+
+    var creds = await GetGoogleCredentials();
+
+    // Add the MCP Server
+    services.AddTransient<GoogleSheetsMCPServer>((sp) => 
+        new GoogleSheetsMCPServer(
+            creds, 
+            googleClientCfg, 
+            sp.GetRequiredService<ILogger<GoogleSheetsMCPServer>>()
+        ));
+
+    // ... rest of code ...
+}
+
+// Example: In a service or agent
+
+public class FinancialDataService
+{
+    private readonly GoogleSheetsMCPServer _sheetsServer;
+
+    public FinancialDataService(GoogleSheetsMCPServer sheetsServer)
+    {
+        _sheetsServer = sheetsServer;
+    }
+
+    public async Task<SheetData> GetIncomeDataAsync()
+    {
+        // MCP server handles all the Google API details
+        var data = await _sheetsServer.ReadFullSheetAsync("Income");
+        
+        // Now you have clean, simple data
+        var headers = data.GetHeaders();
+        var rows = data.GetDataRows();
+        
+        return data;
+    }
+
+    public async Task<List<string>> DiscoverAvailableSheetsAsync()
+    {
+        // Find out what sheets exist
+        return await _sheetsServer.GetSheetNamesAsync();
+    }
+}
+
+// When you call ReadFullSheetAsync("Income"):
+var incomeData = await sheetsServer.ReadFullSheetAsync("Income");
+
+// Result:
+SheetData {
+    SheetName = "Income",
+    Range = "Full Sheet",
+    RowCount = 5,
+    Rows = [
+        SheetRow { RowNumber = 1, Cells = ["Source", "Amount", "Frequency"] },
+        SheetRow { RowNumber = 2, Cells = ["Salary", "5000", "Monthly"] },
+        SheetRow { RowNumber = 3, Cells = ["Bonus", "1000", "Yearly"] },
+        ...
+    ]
+}
+
+// Easy access:
+var headers = incomeData.GetHeaders(); // ["Source", "Amount", "Frequency"]
+var dataRows = incomeData.GetDataRows(); // All rows except header
+
+Key Concepts Explained:
+Concept	What It Means	Why It Matters
+MCP Server	A service that exposes "tools"	AI can call specific functions
+Tools	Methods like ReadRangeAsync()	Each tool does ONE thing well
+Simple Data Models	SheetData, SheetRow	Easy to work with, no Google API complexity
+Logging	_logger.LogInformation()	See what the AI is asking for
+---
+Why This Is Better Than Your Current Code:
+Current (GoogleDocumentService)	New (GoogleSheetsMCPServer)
+Generic ReadRangeAsync method	Specific tools: ReadFullSheet, GetSheetNames
+Returns raw IList<IList<object>>	Returns clean SheetData object
+No context of what's being read	Clear logging of each action
+Hard to extend	Easy to add new tools
+---
+Next Steps:
+1.	Create the MCP/Servers folder
+2.	Add this GoogleSheetsMCPServer.cs file
+3.	Test it independently before connecting to AI
+4.	Then we can add more MCP servers (RentCast, Email, etc.)
+Want me to create a plan to integrate this into your project step-by-step? 🚀

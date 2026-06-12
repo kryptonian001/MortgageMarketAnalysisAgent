@@ -1,4 +1,7 @@
 <Solution>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
   <Project Path="MortgageMarketAnalysisAgent.Tests/MortgageMarketAnalysisAgent.Tests.csproj">
     <Build Solution="Debug|*" Project="false" />
   </Project>

@@ -228,7 +228,7 @@ public static class TestFixtures
                 ShortTerm = "$200",
                 CalculatedTotalExpense = "$3,200",
                 AfterExpenses = "$-400",
-                Source = "Paycheck",
+                Owner = "Paycheck",
                 Notes = "Tight month",
                 TwentiyFivePercentBuffer = "$700",
                 MaxUsableExtraSeventyFivePercent = "$525"

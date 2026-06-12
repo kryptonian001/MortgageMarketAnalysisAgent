@@ -14,7 +14,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents.Components
         public string PaymentAccount { get; set; }
         public string Weight { get; set; }
         public string Required { get; set; }
-        public string Source { get; set; }
+        public string Owner { get; set; }
         public string Notes { get; set; }
     }
 }

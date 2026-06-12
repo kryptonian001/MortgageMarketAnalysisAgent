@@ -21,6 +21,42 @@ namespace MortgageMarketAnalysisAgent.Helpers
             }
         }
 
+        public static int SafeInt(this IList<object> row, int index)
+        {
+            try
+            {
+                return int.Parse(row[index].ToString()!);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return 0;
+            }
+        }
+
+        public static double SafeDouble(this IList<object> row, int index)
+        {
+            try
+            {
+                return double.Parse(row[index].ToString()!);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return 0;
+            }
+        }
+
+        public static decimal SafeDecimal(this IList<object> row, int index)
+        {
+            try
+            {
+                return decimal.Parse(row[index].ToString()!);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return 0;
+            }
+        }
+
 
         public static int? CalculateMortgageMiddleScore(this CreditProfile profile)
         {

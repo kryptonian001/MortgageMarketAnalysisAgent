@@ -14,14 +14,17 @@ Date: [MM/dd/yyyy CST]
 |---|---|---|
 | Cash Flow |  |  |
 | Credit Utilization |  |  |
+| Owner Utilization |  |  |
 | Mortgage Refinance Readiness |  |  |
 | Data Quality |  |  |
 | Recommended Next Action |  |  |
+
 
 Summary:
 - 
 - 
 - 
+
 
 ## 2. Current Financial Position
 
@@ -31,6 +34,9 @@ Summary:
 | Total Credit Card Balance |  |  |
 | Total Credit Card Limit |  |  |
 | Overall Credit Utilization |  |  |
+| Joseph Credit Utilization |  |  |
+| Spouse Credit Utilization |  |  |
+| Joint / Household Utilization |  |  |
 | Total Regular Loan Balance |  |  |
 | Total Short-Term Balance |  |  |
 
@@ -45,7 +51,45 @@ Cash-flow assessment:
 - 
 - 
 
+Household Ownership Summary:
+
+- Joseph Obligations: $
+- Spouse Obligations: $
+- Joint / Household Obligations: $
+
+Observations:
+- 
+- 
+-
+
+| Owner | Income | Required Expenses | Remaining Cash | Utilization Level | Status |
+|---|---:|---:|---:|---|---|
+| Joseph |  |  |  |  |  |
+| Spouse |  |  |  |  |  |
+| Joint / Household |  |  |  |  |  |
+
+Owner cash-flow observations:
+- 
+- 
+-
+
 ## 4. Credit Utilization Risks
+
+| Owner | Total Balance | Total Limit | Utilization | Risk Level | Primary Driver |
+|---|---:|---:|---:|---|---|
+| Joseph |  |  |  |  |  |
+| Spouse |  |  |  |  |  |
+| Joint / Household |  |  |  |  |  |
+| Unknown Owner |  |  |  |  |  |
+| Household Total |  |  |  |  |  |
+
+Utilization analysis:
+- Highest utilization owner:
+- Household utilization:
+- Largest utilization contributor:
+- Refinance readiness impact:
+- Recommended focus:
+
 
 | Card | Balance | Limit | Utilization | Risk Level | Recommended Action |
 |---|---:|---:|---:|---|---|
@@ -55,6 +99,7 @@ Utilization priority:
 1. 
 2. 
 3. 
+
 
 ## 5. Credit Profile and Mortgage Score Readiness
 
@@ -69,23 +114,104 @@ Mortgage score readiness:
 
 ## 6. Mortgage Refinance Readiness
 
+| Input                               | Value | Status Interpretation | Notes |
+| ----------------------------------- | ----: | --------------------- | ----- |
+| First Mortgage Balance              |       |                       |       |
+| First Mortgage Rate                 |       |                       |       |
+| Term Remaining                      |       |                       |       |
+| P&I Payment                         |       |                       |       |
+| Escrow                              |       |                       |       |
+| Second Mortgage Balance             |       |                       |       |
+| Second Mortgage Payment             |       |                       |       |
+| Second Mortgage Rate                |       |                       |       |
+| Target Refinance Month              |       |                       |       |
+| Target Minimum Mortgage FICO        |       |                       |       |
+| Estimated Home Value - Conservative |       |                       |       |
+| Estimated Home Value - Expected     |       |                       |       |
+| Estimated Home Value - Optimistic   |       |                       |       |
+| Home Value Confidence               |       |                       |       |
+| First Mortgage LTV                  |       |                       |       |
+| Combined Mortgage LTV               |       |                       |       |
+| Conservative Combined LTV           |       |                       |       |
+| Equity Position                     |       |                       |       |
+
+### Housing Market Position
+
+| Metric | Value |
+|---|---:|
+| Estimated Market Value Low | |
+| Estimated Market Value Mid | |
+| Estimated Market Value High | |
+| Estimated LTV | |
+| Confidence | |
+
+Housing market observations:
+-
+-
+-
+
+Home market valuation:
+
+| Metric                                    | Value | Notes |
+| ----------------------------------------- | ----: | ----- |
+| Valuation Source                          |       |       |
+| Source ZIP Code                           |       |       |
+| RentCast Last Updated                     |       |       |
+| Subject Property Type                     |       |       |
+| Subject Bedrooms                          |       |       |
+| Subject Bathrooms                         |       |       |
+| Subject Square Feet                       |       |       |
+| Bedroom Bucket Used                       |       |       |
+| Bedroom Bucket Median Price               |       |       |
+| Bedroom Bucket Median Price Per Sq Ft     |       |       |
+| Bedroom Bucket Median Square Feet         |       |       |
+| Bedroom Bucket Total Listings             |       |       |
+| Bedroom Bucket Median Days on Market      |       |       |
+| Property-Type Median Price Per Sq Ft      |       |       |
+| Adjacent Bedroom Anchor                   |       |       |
+| Subject Size Difference vs Bedroom Bucket |       |       |
+| Conservative Market Value                 |       |       |
+| Expected Market Value                     |       |       |
+| Optimistic Market Value                   |       |       |
+| Valuation Confidence                      |       |       |
+| Valuation Concern                         |       |       |
+
+LTV and equity position:
+
+| Metric                    | Value | Status Interpretation | Notes |
+| ------------------------- | ----: | --------------------- | ----- |
+| First Mortgage LTV        |       |                       |       |
+| Combined LTV              |       |                       |       |
+| Conservative Combined LTV |       |                       |       |
+| Estimated Equity Cushion  |       |                       |       |
+| Equity Classification     |       |                       |       |
+
 | Input | Value | Status Interpretation | Notes |
 |---|---:|---|---|
-| First Mortgage Balance |  |  |  |
-| First Mortgage Rate |  |  |  |
-| Term Remaining |  |  |  |
-| P&I Payment |  |  |  |
-| Escrow |  |  |  |
-| Second Mortgage Balance |  |  |  |
-| Second Mortgage Payment |  |  |  |
-| Second Mortgage Rate |  |  |  |
-| Target Refinance Month |  |  |  |
-| Target Minimum Mortgage FICO |  |  |  |
+| Estimated Market Value | | | |
+| Estimated LTV | | | |
+| Housing Market Confidence | | | |
 
-Refinance readiness assessment:
-- 
-- 
-- 
+## Refinance readiness assessment:
+
+*
+*
+
+## Home value interpretation:
+
+*
+*
+
+## Equity and LTV interpretation:
+
+*
+*
+
+## Important valuation note:
+
+*
+*
+
 
 ## 7. Recommended Payment Allocation
 

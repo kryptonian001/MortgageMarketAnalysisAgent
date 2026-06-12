@@ -431,3 +431,6 @@ FodyWeavers.xsd
 /MortgageMarketAnalysisAgent/client_secret.json
 /MortgageMarketAnalysisAgent/appsettings.json
 /MortgageMarketAnalysisAgent/appsettings.json
+/data/google-token
+/secrets
+/token-store

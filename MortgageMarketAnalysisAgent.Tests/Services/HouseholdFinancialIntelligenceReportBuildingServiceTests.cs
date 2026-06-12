@@ -278,7 +278,7 @@ public class HouseholdFinancialIntelligenceReportBuildingServiceTests
             ShortTerm = row[0][12].ToString(),
             CalculatedTotalExpense = row[0][13].ToString(),
             AfterExpenses = row[0][14].ToString(),
-            Source = row[0][15].ToString(),
+            Owner = row[0][15].ToString(),
             Notes = row[0][16].ToString(),
             TwentiyFivePercentBuffer = row[0][17].ToString(),
             MaxUsableExtraSeventyFivePercent = row[0][18].ToString()

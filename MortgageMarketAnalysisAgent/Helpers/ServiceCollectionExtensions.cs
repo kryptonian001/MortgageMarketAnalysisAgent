@@ -10,7 +10,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using MortgageMarketAnalysisAgent.Agents.Concretes;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
+using MortgageMarketAnalysisAgent.Clients;
 using MortgageMarketAnalysisAgent.Models.Config;
+using MortgageMarketAnalysisAgent.Models.RentCast;
 using MortgageMarketAnalysisAgent.Resilience;
 using MortgageMarketAnalysisAgent.Services.Concretes;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
@@ -53,7 +55,10 @@ namespace MortgageMarketAnalysisAgent.Helpers
             services.AddTransient<IPromptBuilder, HouseholdFinancialPromptBuilder>();
 
             services.AddTransient<IAgent, MarketAnalysisAgent>();
-                                            
+
+            services.AddScoped<RentCastClient>();
+            services.AddScoped<UsRealEstateClient>();
+
         }
 
         private static async Task<UserCredential> GetGoogleCredentials()
@@ -76,7 +81,7 @@ namespace MortgageMarketAnalysisAgent.Helpers
                     scopes,
                     "user",
                     CancellationToken.None,
-                    new FileDataStore("token-store", true));
+                    new FileDataStore(googleClientCfg.GoogleTokenPath, true));
             }
 
             return credential;

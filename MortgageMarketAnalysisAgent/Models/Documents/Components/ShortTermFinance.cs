@@ -11,6 +11,7 @@
         public string RateAPR { get; set; }
         public string StarteDate { get; set; }
         public string EndDate { get; set; }
+        public string Owner { get; set; }
         public string Source { get; set; }
         public string Notes { get; set; }
     }

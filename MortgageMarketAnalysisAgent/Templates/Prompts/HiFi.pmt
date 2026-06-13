@@ -230,6 +230,33 @@ The selected upcoming pay-cycle should primarily analyze:
 
 Do not inflate utilization by including obligations that belong to owners whose obligations were already allocated to their own earlier pay cycle.
 
+Historical Appraisal Rules:
+
+Historical appraisals are not current market values.
+
+Use historical appraisals as valuation anchors only.
+
+When both appraisal and market data exist:
+
+- Treat appraisal value as historical evidence.
+- Treat market data as current market evidence.
+- Explain differences between the two.
+
+Square-Footage Cross Check:
+
+When usable price-per-square-foot data exists:
+
+Calculate:
+
+Estimated Value =
+Subject SqFt × Market Price Per SqFt
+
+Use as a secondary validation method.
+
+Do not rely solely on bedroom-bucket median pricing.
+
+Do not assume appraisal value remains current.
+
 Refinance-readiness exception:
 
 - Owner-specific obligations excluded from the current pay-cycle analysis may still be discussed in refinance-readiness analysis.
@@ -938,7 +965,196 @@ Label as:
 
 for refinance planning purposes.
 
+Refinance Value Impact:
+
+Evaluate whether estimated market value appears sufficient to support:
+
+- FHA Streamline
+- FHA-to-Conventional
+- Conventional Refinance
+
+Discuss only qualitatively.
+
+Do not assume lender approval.
+
 Do not represent estimated LTV as an actual lender determination.
+
+Historical Appraisal Rules:
+
+Historical appraisals are not current market values.
+
+Use historical appraisals as valuation anchors only.
+
+When both appraisal and market data exist:
+
+- Treat appraisal value as historical evidence.
+- Treat market data as current market evidence.
+- Explain differences between the two.
+
+Do not assume appraisal value remains current.
+
+Square-Footage Cross Check:
+
+When usable price-per-square-foot data exists:
+
+Calculate:
+
+Estimated Value =
+Subject SqFt × Market Price Per SqFt
+
+Use as a secondary validation method.
+
+Do not rely solely on bedroom-bucket median pricing.
+
+Estimated Equity Position:
+
+Estimated Equity =
+Expected Market Value
+-
+Mortgage Balance
+-
+Second Mortgage Balance
+
+Label:
+
+- Strong
+- Moderate
+- Limited
+- Unknown
+
+for refinance planning purposes.
+
+Subject Property Match Quality:
+
+Calculate:
+
+- Bedroom Match
+- Bathroom Match
+- Square Footage Match
+
+Overall Match:
+
+- Excellent
+- Good
+- Fair
+- Weak
+
+Lower valuation confidence for Weak matches.
+
+Builder Inventory Check:
+
+If median DOM is low and listing counts are high:
+
+Note that builder inventory may influence market values.
+
+Lower confidence if market appears dominated by new construction listings rather than resale transactions.
+
+Post Appraisal Upgrade Assessment Rules:
+
+Purpose:
+
+- Evaluate whether improvements completed after the historical appraisal may have increased, decreased, or had no material effect on property value.
+- Evaluate future planned upgrades for potential refinance-readiness impact.
+- Support Home Market Valuation and Mortgage Refinance Readiness analysis.
+
+Do not assume every dollar spent increases market value by the same amount.
+
+Upgrade classifications:
+
+Potentially Value-Adding:
+- Kitchen improvements
+- Bathroom improvements
+- Flooring upgrades
+- HVAC replacement
+- Roof replacement
+- Energy efficiency improvements
+- Landscaping improvements
+- Patio improvements
+- Fence replacement
+- Smart-home upgrades
+- Garage improvements
+
+Typically Neutral:
+- Cosmetic decorating
+- Furniture purchases
+- Temporary fixtures
+- Routine maintenance
+
+Potentially Negative:
+- Deferred maintenance
+- Unfinished projects
+- Known property damage
+- Functional obsolescence
+- Non-permitted modifications
+
+Assessment requirements:
+
+For each upgrade:
+
+Determine:
+
+- Upgrade Type
+- Estimated Market Impact
+- Confidence
+- Notes
+
+Market Impact categories:
+
+- Likely Positive
+- Slightly Positive
+- Neutral
+- Slightly Negative
+- Likely Negative
+- Uncertain
+
+Confidence categories:
+
+- High
+- Medium
+- Low
+
+Do not estimate dollar value increases unless sufficient supporting data exists.
+
+Future Projected Upgrades:
+
+Future Projected Upgrades should be evaluated separately from completed upgrades.
+
+Do not include future upgrades in current market value calculations.
+
+Future upgrades may be discussed in:
+
+- Future refinance readiness
+- Potential future property value
+- Long-term equity position
+
+Label future-upgrade effects as speculative.
+
+Home Market Valuation interaction:
+
+Completed upgrades may influence:
+
+- Valuation Confidence
+- Valuation Concern
+- Marketability observations
+
+Completed upgrades should not automatically increase Estimated Market Value without supporting market evidence.
+
+Refinance Upgrade Impact Rule:
+
+When discussing refinance readiness:
+
+Consider:
+
+- Completed post-appraisal upgrades.
+- Deferred maintenance.
+- Planned future upgrades.
+
+If upgrades appear likely to improve marketability or appraisal outcomes:
+
+Mention them as potential refinance strengths.
+
+Do not assume lender or appraiser recognition of upgrade value.
+
 
 Income and pay-date calculation rules:
 - The Income tab contains the initial pay date for each income source.

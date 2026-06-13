@@ -247,7 +247,18 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     PostalCode = row.SafeString(1),
                     BedRooms = row.SafeInt(2),
                     BathRooms = row.SafeDouble(3),
-                    SquareFootage = row.SafeDouble(4)
+                    SquareFootage = row.SafeDouble(4),
+                    PropertyType = row.SafeString(5),
+                    YearBuilt = row.SafeString(6),
+                    Stories = row.SafeInt(7),
+                    Garage = row.SafeString(8),
+                    LotSize  =row.SafeInt(9),
+                    HOA = row.SafeString(10),
+                   HoaAnnualFee = row.SafeString(11),
+                   AppraisedValue = row.SafeString(12),
+                   AppraisalDate = row.SafeString(13),
+                   PostAppraisalUpgrades = row.SafeString(14),
+                   FutureProjectedUpgrades = row.SafeString(15)
                 });
             }
 

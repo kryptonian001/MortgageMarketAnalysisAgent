@@ -150,6 +150,15 @@ Housing market observations:
 -
 -
 
+Historical Value Trend:
+
+| Metric | Value |
+|---|---:|
+| Historical Appraisal | |
+| Current Expected Value | |
+| Estimated Appreciation | |
+| Estimated Appreciation % | |
+
 Home market valuation:
 
 | Metric                                    | Value | Notes |
@@ -191,6 +200,39 @@ LTV and equity position:
 | Estimated Market Value | | | |
 | Estimated LTV | | | |
 | Housing Market Confidence | | | |
+
+Post Appraisal Upgrade Assessment
+
+| Upgrade | Status | Market Impact | Confidence | Notes |
+|---|---|---|---|---|
+| | | | | |
+
+Upgrade observations:
+
+-
+-
+-
+
+Future Projected Upgrades
+
+| Planned Upgrade | Potential Impact | Confidence | Refinance Readiness Impact | Notes |
+|---|---|---|---|---|
+| | | | | |
+
+Future upgrade observations:
+
+-
+-
+-
+
+Upgrade impact summary:
+
+| Area | Assessment |
+|---|---|
+| Current Property Value Impact | |
+| Future Property Value Impact | |
+| Refinance Readiness Impact | |
+| Confidence | |
 
 ## Refinance readiness assessment:
 

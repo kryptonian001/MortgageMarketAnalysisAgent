@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
+using MortgageMarketAnalysisAgent.Clients;
 using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Models.Documents;
 using MortgageMarketAnalysisAgent.Models.Documents.Components;
+using MortgageMarketAnalysisAgent.Models.RentCast;
+using MortgageMarketAnalysisAgent.Models.UsRealEstate;
 using MortgageMarketAnalysisAgent.Resilience;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
 using Polly;
@@ -23,6 +26,9 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
         private readonly ILogger<MarketAnalysisService> _logger;
         private readonly ResiliencePipelineProvider _resilienceProvider;
 
+        private readonly RentCastClient _rentcastAnalyzer;
+        private readonly UsRealEstateClient _usrealestateAnalyzer;
+
         string? emailAddress;
 
         public MarketAnalysisService(
@@ -32,6 +38,8 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             INotify notifier,
             IOptions<AgentConfig> options,
             ResiliencePipelineProvider resilienceProvider,
+            RentCastClient marketAnalyzer,
+            UsRealEstateClient usrealestateAnalyzer,
             ILogger<MarketAnalysisService> logger) 
         {
             _reportBuidService = reportBuilding;
@@ -40,6 +48,8 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             _notifier = notifier;
             _logger = logger;
             _resilienceProvider = resilienceProvider;
+            _rentcastAnalyzer = marketAnalyzer;
+            _usrealestateAnalyzer = usrealestateAnalyzer;
 
             emailAddress = options?.Value?.NotificationEmail;
         }
@@ -52,6 +62,29 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 throw new InvalidOperationException("NotificationEmail is required in configuragtion");
             }
 
+            List<MarketTrend> marketTrends = new List<MarketTrend>();
+
+            var houses = await _reportBuidService.BuildMarketHouseReport();
+
+            foreach (var house in houses)
+            {
+                RentCast? tentCastTrends = await _rentcastAnalyzer.AnalyzeMarket(house.PostalCode) as RentCast;
+
+                if (tentCastTrends != null)
+                {
+                    var temp = RentCastClient.BuildRentCastDataSource(house, tentCastTrends);
+                    marketTrends.AddRange(temp);
+                }
+
+                UsRealEstate? usRealEstateTrends = await _usrealestateAnalyzer.AnalyzeMarket(house.PostalCode) as UsRealEstate;
+
+                if (usRealEstateTrends != null)
+                {
+                    var temp = UsRealEstateClient.BuildRentCastDataSource(house, usRealEstateTrends);
+                    marketTrends.AddRange(temp);
+                }
+            }
+
             var pipeline = _resilienceProvider.GetApiCallPipeline();
 
             try
@@ -62,7 +95,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     var model = await _reportBuidService.BuildHouseholdFinancialIntelligenceReport();
 
                     _logger.LogInformation("Building market analysis prompt with Household_Financial_Intelligence_Agent_Ready infromation");
-                    var prompt = _promptBuilder.BuilPrompt(model);
+                    var prompt = _promptBuilder.BuilPrompt(model, houses[0], marketTrends);
 
                     _logger.LogInformation("Sending promp to ChatGPT");
                     var analysis = await _agent.RunAnalysisAsync(prompt);
@@ -100,5 +133,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 throw;
             }
         }
+
+        
     }
 }

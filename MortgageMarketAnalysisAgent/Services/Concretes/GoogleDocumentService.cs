@@ -16,7 +16,6 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 {
     public class GoogleDocumentService : IExternalDocumentService
     {
-        private readonly DocsService docsService;
         private readonly SheetsService sheetsService;
         private readonly ILogger<GoogleDocumentService> _logger;
 
@@ -27,8 +26,6 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 HttpClientInitializer = credential,
                 ApplicationName = config?.ApplicationName ?? ""
             };
-
-            docsService = new DocsService(init);
 
             sheetsService = new SheetsService(init);
 

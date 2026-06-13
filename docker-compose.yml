@@ -1,0 +1,49 @@
+services:
+  mortgagemarketanalysisagent:
+    image: ${DOCKER_REGISTRY-}mortgage-analysis-agent
+    build:
+      context: .
+      dockerfile: MortgageMarketAnalysisAgent/Dockerfile
+    working_dir: /app
+    environment:
+      DOTNET_ENVIROMENT: Production
+      AgentConfig__ApplicationName: MortgageMarketAnalysisAgent
+      AgentConfig__GoogleConfigPath: /app/secrets/client_secret.json
+      AgentConfig__NotificationEmail: josephjohnsonjr71@gmail.com
+      AgentConfig__OpenAIKey: ${OPENAI_API_KEY}
+    volumes:
+      - ./MortgageMarketAnalysisAgent/templates:/app/templates:ro
+      - ./secrets/client_secret.json:/app/secrets/client_secret.json:ro  
+      - ./token-store:/app/token-store
+    restart: "no"
+
+  mortgage-agent-runner:
+    image: mortgage-analysis-agent:latest
+    container_name: mortgage-agent-runner
+    working_dir: /app
+    entrypoint: ["sh", "-c", "while true; do sleep 3600; done"]
+    environment:
+      DOTNET_ENVIRONMENT: Production
+      AgentConfig__GoogleConfigPath: /app/secrets/client_secret.json
+      AgentConfig__GoogleTokenPath: /app/data/google-token
+      AgentConfig__OpenAIKey: ${OPENAI_API_KEY}
+    volumes:
+      - ./MortgageMarketAnalysisAgent/templates:/app/templates:ro
+      - ./secrets:/app/secrets:ro
+      - ./data:/app/data
+    labels:
+      ofelia.enabled: "true"
+      ofelia.job-exec.mortgage-agent.schedule: "0 0 8 * * SAT"
+      ofelia.job-exec.mortgage-agent.command: "dotnet MortgageMarketAnalysisAgent.dll"
+      ofelia.job-exec.mortgage-agent.tty: "false"
+    restart: unless-stopped
+
+  ofelia:
+    image: mcuadros/ofelia:latest
+    container_name: mortgage-agent-scheduler
+    command: daemon --docker
+    depends_on:
+      - mortgage-agent-runner
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped

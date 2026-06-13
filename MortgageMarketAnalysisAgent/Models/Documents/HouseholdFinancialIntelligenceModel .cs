@@ -22,8 +22,9 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
             public static readonly string CREDIT_PROFILES = "Credit Profiles!A2:I3";
             public static readonly string LOANS = "Loans!A2:O10";
             public static readonly string SHORT_TERM_FINANCING = "Short-Term Financing!A2:K20";
-            public static readonly string PAYCHECK_CASH_FLOW = "Paycheck Cash Flow!A2:S52";
+            public static readonly string PAYCHECK_CASH_FLOW = "Paycheck Cash Flow!A2:I52";
             public static readonly string MORTGAGE_REFI_READINESS = "Mortgage Refi Readiness!A2:H11";
+            public static readonly string HOUSING_MARKET = "Housing Market!A2:E5";
         }
 
         public AgentDashboard AgentDashboard { get; set; }
@@ -35,6 +36,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
         public List<ShortTermFinance> ShortTermFinancing { get; set; } = new();
         public List<CashFlow> PaychecCashFlow { get; set; } = new();
         public List<MortgageRefiReadiness> MortgageRefiReadinesses { get; set; } = new();
+        public List<MarketTrend> HousingMarketTrends { get; set; } = new();
     }
 
 

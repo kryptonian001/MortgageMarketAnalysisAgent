@@ -5,8 +5,8 @@
         public string CardName { get; set; }
         public string DueDay { get; set; }
         public string MinimumPayment { get; set; }
-        public string Adjustment { get; set; }
-        public string RealAmount { get; set; }
+        //public string Adjustment { get; set; }
+        //public string RealAmount { get; set; }
         public string Balance { get; set; }
         public string Limit { get; set; }
         public string Untilization { get; set; }

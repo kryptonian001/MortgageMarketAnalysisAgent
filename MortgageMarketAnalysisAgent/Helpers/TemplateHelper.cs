@@ -21,6 +21,28 @@ namespace MortgageMarketAnalysisAgent.Helpers
             return modelJson;
         }
 
+        public static string GetTrendReport(this List<MarketTrend> trends)
+        {
+            string modelJson = JsonConvert.SerializeObject(trends, new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+
+            return modelJson;
+        }
+
+        public static string GetHomeReport(this HousingMarketModel home)
+        {
+            string modelJson = JsonConvert.SerializeObject(home, new JsonSerializerSettings
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
+
+            return modelJson;
+        }
+
         public static string GetTemplate(string path)
         {
             string? templateText = File.ReadAllText(path);

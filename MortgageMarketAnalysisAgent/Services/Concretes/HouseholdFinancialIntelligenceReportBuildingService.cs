@@ -88,7 +88,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     PaymentAccount = row.SafeString(5),
                     Weight = row.SafeString(6),
                     Required = row.SafeString(7),
-                    Source = row.SafeString(8),
+                    Owner = row.SafeString(8),
                     Notes = row.SafeString(9)
                 });
             }
@@ -102,18 +102,18 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     CardName = row.SafeString(0),
                     DueDay = row.SafeString(1),
                     MinimumPayment = row.SafeString(2),
-                    Adjustment = row.SafeString(3),
-                    RealAmount = row.SafeString(4),
-                    Balance = row.SafeString(5),
-                    Limit = row.SafeString(6),
-                    Untilization = row.SafeString(7),
-                    PaymentPct = row.SafeString(8),
-                    PayoffTarget = row.SafeString(9),
-                    StatementCloseDate = row.SafeString(10),
-                    APR = row.SafeString(11),
-                    Owner = row.SafeString(12),
-                    Source = row.SafeString(13),
-                    Notes = row.SafeString(14)
+                    //Adjustment = row.SafeString(3),
+                    //RealAmount = row.SafeString(4),
+                    Balance = row.SafeString(3),
+                    Limit = row.SafeString(4),
+                    Untilization = row.SafeString(5),
+                    PaymentPct = row.SafeString(6),
+                    PayoffTarget = row.SafeString(7),
+                    StatementCloseDate = row.SafeString(8),
+                    APR = row.SafeString(9),
+                    Owner = row.SafeString(10),
+                    Source = row.SafeString(11),
+                    Notes = row.SafeString(12)
                 });
             }
 
@@ -156,10 +156,10 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     Total = row.SafeString(8),
                     PIF = row.SafeString(9),
                     APR = row.SafeString(10),
-                    Owner = row.SafeString(12),
-                    Priority = row.SafeString(13),
-                    Source = row.SafeString(14),
-                    Notes = row.SafeString(15)
+                    Owner = row.SafeString(11),
+                    Priority = row.SafeString(12),
+                    Source = row.SafeString(13),
+                    Notes = row.SafeString(14)
                 });
             }
 
@@ -178,8 +178,9 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     RateAPR = row.SafeString(6),
                     StarteDate = row.SafeString(7),
                     EndDate = row.SafeString(8),
-                    Source = row.SafeString(9),
-                    Notes = row.SafeString(10)
+                    Owner = row.SafeString(9),
+                    Source = row.SafeString(10),
+                    Notes = row.SafeString(11)
                 });
             }
 
@@ -194,20 +195,20 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                     Bonus = row.SafeString(2),
                     CUTX = row.SafeString(3),
                     WorkExpenses = row.SafeString(4),
-                    ChasePyN4 = row.SafeString(5),
-                    Mortgage = row.SafeString(6),
-                    Groceries = row.SafeString(7),
-                    Other = row.SafeString(8),
-                    Bills = row.SafeString(9),
-                    CC = row.SafeString(10),
-                    RegularLoans = row.SafeString(11),
-                    ShortTerm = row.SafeString(12),
-                    CalculatedTotalExpense = row.SafeString(13),
-                    AfterExpenses = row.SafeString(14),
-                    Source = row.SafeString(15),
-                    Notes = row.SafeString(16),
-                    TwentiyFivePercentBuffer = row.SafeString(17),
-                    MaxUsableExtraSeventyFivePercent = row.SafeString(18)
+                    //ChasePyN4 = row.SafeString(5),
+                    Mortgage = row.SafeString(5),
+                    Groceries = row.SafeString(6),
+                    //Other = row.SafeString(8),
+                    //Bills = row.SafeString(9),
+                    //CC = row.SafeString(10),
+                    //RegularLoans = row.SafeString(11),
+                    //ShortTerm = row.SafeString(12),
+                    //CalculatedTotalExpense = row.SafeString(13),
+                    //AfterExpenses = row.SafeString(14),
+                    Owner = row.SafeString(7),
+                    Notes = row.SafeString(8),
+                    //TwentiyFivePercentBuffer = row.SafeString(17),
+                    //MaxUsableExtraSeventyFivePercent = row.SafeString(18)
                 });
             }
 
@@ -229,6 +230,28 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             }
 
             return report;
+        }
+
+        public async Task<List<HousingMarketModel>> BuildMarketHouseReport()
+        {
+            List<HousingMarketModel> houses = new List<HousingMarketModel>();
+
+            _logger.LogInformation(nameof(HouseholdFinancialIntelligenceModel.ReportCells.HOUSING_MARKET));
+            var rows = await _documentService.ReadRangeAsync(HouseholdFinancialIntelligenceModel.ReportCells.SHEET_ID, HouseholdFinancialIntelligenceModel.ReportCells.HOUSING_MARKET);
+
+            foreach (var row in rows)
+            {
+                houses.Add(new HousingMarketModel
+                {                    
+                    StreetAddress = row.SafeString(0),
+                    PostalCode = row.SafeString(1),
+                    BedRooms = row.SafeInt(2),
+                    BathRooms = row.SafeDouble(3),
+                    SquareFootage = row.SafeDouble(4)
+                });
+            }
+
+            return houses;
         }
 
         private DashboardMetric AddDashboardMetric(IList<object> row)

@@ -244,21 +244,23 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
                 houses.Add(new HousingMarketModel
                 {                    
                     StreetAddress = row.SafeString(0),
-                    PostalCode = row.SafeString(1),
-                    BedRooms = row.SafeInt(2),
-                    BathRooms = row.SafeDouble(3),
-                    SquareFootage = row.SafeDouble(4),
-                    PropertyType = row.SafeString(5),
-                    YearBuilt = row.SafeString(6),
-                    Stories = row.SafeInt(7),
-                    Garage = row.SafeString(8),
-                    LotSize  =row.SafeInt(9),
-                    HOA = row.SafeString(10),
-                   HoaAnnualFee = row.SafeString(11),
-                   AppraisedValue = row.SafeString(12),
-                   AppraisalDate = row.SafeString(13),
-                   PostAppraisalUpgrades = row.SafeString(14),
-                   FutureProjectedUpgrades = row.SafeString(15)
+                    City = row.SafeString(1),
+                    State = row.SafeString(2),
+                    PostalCode = row.SafeString(3),
+                    BedRooms = row.SafeInt(4),
+                    BathRooms = row.SafeDouble(5),
+                    SquareFootage = row.SafeDouble(6),
+                    PropertyType = row.SafeString(7),
+                    YearBuilt = row.SafeString(8),
+                    Stories = row.SafeInt(9),
+                    Garage = row.SafeString(10),
+                    LotSize  =row.SafeInt(11),
+                    HOA = row.SafeString(12),
+                   HoaAnnualFee = row.SafeString(13),
+                   AppraisedValue = row.SafeString(14),
+                   AppraisalDate = row.SafeString(15),
+                   PostAppraisalUpgrades = row.SafeString(16),
+                   FutureProjectedUpgrades = row.SafeString(17)
                 });
             }
 

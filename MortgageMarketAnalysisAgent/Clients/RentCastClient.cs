@@ -23,6 +23,15 @@ public class RentCastClient : IMarketAnalyzer
         _reportBuildingService = reportBuildingService;
     }
 
+    public async Task<IMarketValue> AnalyzeMarket(HousingMarketModel house)
+    {
+        var houses = await _reportBuildingService.BuildMarketHouseReport();
+
+        var trends = JsonConvert.DeserializeObject<RentCast>(marketTrends)!;
+
+        return await Task.FromResult(trends);
+    }
+
     public async Task<IMarketValue> AnalyzeMarket(string zipcode)
     {
         var houses = await _reportBuildingService.BuildMarketHouseReport();

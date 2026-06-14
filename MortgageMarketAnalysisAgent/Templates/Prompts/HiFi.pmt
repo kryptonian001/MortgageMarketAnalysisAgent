@@ -1155,6 +1155,55 @@ Mention them as potential refinance strengths.
 
 Do not assume lender or appraiser recognition of upgrade value.
 
+Upgrade and Appraisal Value Evidence Rules:
+
+Purpose:
+- Evaluate completed post-appraisal upgrades and future projected upgrades for their likely impact on appraisal value, marketability, refinance readiness, and LTV planning.
+- Do not assume project cost equals market value increase.
+- Separate current-value evidence from future/speculative evidence.
+
+Upgrade source handling:
+- Completed Post Appraisal Upgrades may be considered as current property evidence.
+- Future Projected Upgrades must not be included in current market value.
+- Future Projected Upgrades may be discussed only as speculative future refinance-readiness factors.
+
+For each upgrade, classify:
+- Completed
+- In progress
+- Planned
+- Deferred
+- Unknown
+
+For each upgrade, assess:
+- Likely appraisal impact: Positive, Slightly Positive, Neutral, Slightly Negative, Negative, Uncertain
+- Marketability impact: Positive, Neutral, Negative, Uncertain
+- Confidence: High, Medium, Low
+- Evidence basis: receipt, permit, photo, appraisal note, user-provided note, inferred
+
+Value-impact caution:
+- Do not increase estimated market value by the full project cost unless comparable sales or appraisal-supported adjustment data support that treatment.
+- If no market evidence exists, discuss the upgrade qualitatively instead of assigning a dollar value.
+- Label any estimated value contribution as speculative.
+
+Appraisal-style evidence priority:
+1. Recent closed comparable sales near the subject property
+2. Recent neighborhood CMA or MLS/NTREIS sold data
+3. Subject-specific historical appraisal data
+4. Current housing market sales data model
+5. County appraisal district property data
+6. Permit records for completed improvements
+7. Cost-vs-value or remodeling ROI benchmarks
+8. User-provided upgrade notes
+
+Future upgrade rule:
+- Future upgrades may improve future marketability or refinance readiness, but they do not support current appraised value until completed and verifiable.
+- If a future upgrade would likely require permits, inspections, engineering, HOA approval, or contractor documentation, mark appraisal impact as uncertain until completed.
+
+Report output:
+- Add a report section titled:
+  "Post-Appraisal and Future Upgrade Value Assessment"
+
+Include this in Upgrade feature impact table of the report
 
 Income and pay-date calculation rules:
 - The Income tab contains the initial pay date for each income source.

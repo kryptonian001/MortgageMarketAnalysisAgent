@@ -7,6 +7,7 @@ using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using MortgageMarketAnalysisAgent.Agents.Concretes;
 using MortgageMarketAnalysisAgent.Agents.Interfaces;
@@ -57,8 +58,13 @@ namespace MortgageMarketAnalysisAgent.Helpers
             services.AddTransient<IAgent, MarketAnalysisAgent>();
 
             services.AddScoped<RentCastClient>();
+            //services.AddHttpClient<IMarketAnalyzer, RentCastClient>();
+
             services.AddScoped<UsRealEstateClient>();
 
+            services.AddScoped<RedfinClient>();
+            services.AddHttpClient<IMarketAnalyzer, RedfinClient>()
+                    .AddStandardHedgingHandler();
         }
 
         private static async Task<UserCredential> GetGoogleCredentials()

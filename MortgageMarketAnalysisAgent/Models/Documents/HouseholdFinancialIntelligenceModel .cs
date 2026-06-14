@@ -24,7 +24,7 @@ namespace MortgageMarketAnalysisAgent.Models.Documents
             public static readonly string SHORT_TERM_FINANCING = "Short-Term Financing!A2:K20";
             public static readonly string PAYCHECK_CASH_FLOW = "Paycheck Cash Flow!A2:I52";
             public static readonly string MORTGAGE_REFI_READINESS = "Mortgage Refi Readiness!A2:H11";
-            public static readonly string HOUSING_MARKET = "Housing Market!A2:P5";
+            public static readonly string HOUSING_MARKET = "Housing Market!A2:R5";
         }
 
         public AgentDashboard AgentDashboard { get; set; }

@@ -6,6 +6,7 @@ using MortgageMarketAnalysisAgent.Helpers;
 using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Models.Documents;
 using MortgageMarketAnalysisAgent.Models.Documents.Components;
+using MortgageMarketAnalysisAgent.Models.Redfin.Sold;
 using MortgageMarketAnalysisAgent.Models.RentCast;
 using MortgageMarketAnalysisAgent.Models.UsRealEstate;
 using MortgageMarketAnalysisAgent.Resilience;
@@ -28,6 +29,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 
         private readonly RentCastClient _rentcastAnalyzer;
         private readonly UsRealEstateClient _usrealestateAnalyzer;
+        private readonly RedfinClient _redfinClient;
 
         string? emailAddress;
 
@@ -40,6 +42,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             ResiliencePipelineProvider resilienceProvider,
             RentCastClient marketAnalyzer,
             UsRealEstateClient usrealestateAnalyzer,
+            RedfinClient redfinClient,
             ILogger<MarketAnalysisService> logger) 
         {
             _reportBuidService = reportBuilding;
@@ -50,6 +53,7 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
             _resilienceProvider = resilienceProvider;
             _rentcastAnalyzer = marketAnalyzer;
             _usrealestateAnalyzer = usrealestateAnalyzer;
+            _redfinClient = redfinClient;
 
             emailAddress = options?.Value?.NotificationEmail;
         }
@@ -68,6 +72,15 @@ namespace MortgageMarketAnalysisAgent.Services.Concretes
 
             foreach (var house in houses)
             {
+                Redfin? redfinTrends = await _redfinClient.AnalyzeMarket(house) as Redfin;
+
+                if (redfinTrends != null)
+                {
+                    var temp = RedfinClient.BuildRedfinDataSource(house, redfinTrends);
+                    marketTrends.AddRange(temp);
+                }
+
+
                 RentCast? tentCastTrends = await _rentcastAnalyzer.AnalyzeMarket(house.PostalCode) as RentCast;
 
                 if (tentCastTrends != null)

@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MortgageMarketAnalysisAgent.Helpers;
+using MortgageMarketAnalysisAgent.Models.Config;
 using MortgageMarketAnalysisAgent.Services.Concretes;
 using MortgageMarketAnalysisAgent.Services.Interfaces;
 
@@ -17,6 +19,9 @@ namespace MortgageMarketAnalysisAgent
                 var builder = Host.CreateApplicationBuilder(args);
 
                 await builder.Services.AddAgentConfigurationAsync();
+
+                builder.Services.Configure<RapidApiConfig>(builder.Configuration.GetSection(nameof(RapidApiConfig)));
+
 
                 builder.Logging.AddConsole();
 
